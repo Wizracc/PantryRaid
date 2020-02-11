@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="title">Hello, {{ user.username | default("anonymous") }}!</h1>
+    
+    <a href="{{ url_for('routes.all_recipes') }}">Browse All Recipes</a><br>
+    <a href="{{ url_for('routes.all_tags') }}">Browse Recipes by Tag</a><br>
+    {% if user.is_active %}
+    <a href="{{ url_for('routes.favorite_recipes') }}">View Favorite Recipes</a>
+    <p><a href="{{ url_for('routes.substitute') }}">View My Substitutions</a></p>
+    {% endif %}
+{% endblock %}

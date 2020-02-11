@@ -1,0 +1,25 @@
+[flake8]
+# Flake warnings to ignore
+ignore =
+    # Line too long
+    E501,
+    # Whitespace before/after '{'
+    E201, E202,
+    # Over-/underindentation on hanging or continued indents
+    E121, E123, E126, E127, E128
+
+# Ignore warnings that we want overall, but not for a specific file,
+# e.g. abstract class imports used in all subclasses
+#per-file-ignores =
+#    # Unused import
+#    pantry_raid/models/MongoCollection.py:F401
+# The above warning was fixed inline. This is left as an example of the syntax.
+
+exclude =
+    scripts,
+    tests,
+    __pycache__,
+    __init__.py,
+    .venv,
+    .vscode,
+    .pytest_cache

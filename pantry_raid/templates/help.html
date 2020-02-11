@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+{% block title %} - Help {% endblock %}
+
+{% block content %}
+
+<script src="{{ url_for('static', filename='hide.js') }}"></script>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide1')">
+    <p class="card-header-title">
+      Registration and Login
+    </p>
+  </header>
+  <div class="card-content" id="hide1">
+    <div class="content">
+        <p>First, you'll need to make an account on the <i class="fas fa-user-secret"></i> register page. You'll need a unique username and a password that has at least 4 characters to register. You can enter your e-mail if you want. Pantry Raid doesn't share your e-mail with anyone and doesn't use it for any communication at this time. <strong>Use a unique password for your Pantry Raid account.</strong></p>
+        <p>If you're already registered, log in at the <i class="fas fa-user-ninja"></i> login page.</p>        
+       <p>We don't store your real password in our database, but a cryptographically hashed representation of it. The hash operation is one-way -- that means Pantry Raid doesn't know your real password. You'll have to contact an administrator to have your account reset if you forget your password.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide2')">
+    <p class="card-header-title">
+      Your Pantry
+    </p>
+  </header>
+  <div class="card-content" id="hide2">
+    <div class="content">
+        <p>After registering, you'll need to add ingredients to your virtual <i class="fas fa-utensils"></i> pantry.
+          Enter an ingredient in the text box, and then click the add button to add it to your virtual pantry.
+          To remove an item that is no longer in your pantry, click the <i class="fa fa-trash-alt"></i> trash can icon.
+        </p>     
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide3')">
+    <p class="card-header-title">
+      All Recipes
+    </p>
+  </header>
+  <div class="card-content" id="hide3">
+    <div class="content">
+        <p>If you want to look at all of our available recipes, you can click the All Recipes link on the homepage.
+        </p>     
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide4')">
+    <p class="card-header-title">
+      Browse by Tags
+    </p>
+  </header>
+  <div class="card-content" id="hide4">
+    <div class="content">
+        <p>If you want to browse recipes by tags, visit the home page and click on the link.
+        </p>     
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide14')">
+    <p class="card-header-title">
+    Searching
+    </p>
+  </header>
+  <div class="card-content" id="hide14">
+    <div class="content">
+        <p>Visit the <i class="fas fa-book"></i> Search page from the navbar to search for recipes. All searches will be limited to return only recipes that use things in your pantry, or optionally, things that can be substituted using ingredients in your pantry. You can narrow down search results by using filters on the search page if desired. Read the items prefixed "Advanced Search" on this page for more information on the filters.
+        </p>     
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide5')">
+    <p class="card-header-title">
+      Advanced Search: Pinned Ingredients
+    </p>
+  </header>
+  <div class="card-content" id="hide5">
+    <div class="content">
+        <p>If you only want to see results with a specific key ingredient, such as produce that you need to use up before it expires, add a pinned ingredient by clicking the  <i class="fas fa-plus-circle"></i> plus icon.
+        </p> 
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide6')">
+    <p class="card-header-title">
+      Advanced Search: Exclude Ingredients
+    </p>
+  </header>
+  <div class="card-content" id="hide6">
+    <div class="content">
+        <p>If you're cooking for a picky eater, or someone with food allergies or sensitivities, add an ingredient to exclude from the search results by clicking the  <i class="fas fa-plus-circle"></i> plus icon.
+        </p>
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide10')">
+    <p class="card-header-title">
+      Advanced Search: Tags
+    </p>
+  </header>
+  <div class="card-content" id="hide10">
+    <div class="content">
+        <p>Recipes have been categorized by tags. You can limit the result to recipes of certain tag(s) by selecting them in the combo box. Multiple tags can be selected by using Ctrl+Left Click on each tag, or if all of the tags are in a consecutive sequence, you can drag to select multiple at once.
+        </p>
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide11')">
+    <p class="card-header-title">
+      Advanced Search: Macronutrients
+    </p>
+  </header>
+  <div class="card-content" id="hide11">
+    <div class="content">
+        <p>On a low-sodium diet or trying to bulk up? Along with several other macronutrients, you can restrict recipe results to those underneath or over a certain threshold per serving. Select the macronutrient from the dropdown menu, whether the macronutrient value should be greater than or less than your target, and type in a number in the blank box.
+        </p>
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide12')">
+    <p class="card-header-title">
+      Advanced Search: Prep Time
+    </p>
+  </header>
+  <div class="card-content" id="hide12">
+    <div class="content">
+        <p>If you're in a hurry, you can set a maximum preparation time for the recipes returned by your search. The value should be in minutes.
+        </p>
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide7')">
+    <p class="card-header-title">
+      Ingredient Substitutions (Registered Users Only)
+    </p>
+  </header>
+  <div class="card-content" id="hide7">
+    <div class="content">
+        <p>If you've noted some ingredient substitutions, you can allow the search to match any of your substituted ingredients instead of just what's included in the recipes.
+        </p>
+        <p>If you don't have an ingredient needed for a recipe when you're visiting a recipe page, the application will assume you're substituting that ingredient. You can click on the text for the ingredient to go directly to your substitutions page. Note that you'll see the substitution text if you're just browsing by tags or all recipes, or looking at old favorites.</p>
+        <p>To add ingredient substitutions, log in and visit the home page to browse to your substitutions. Type in the name of the ingredient you would be substituting and the quantity. Then, add ingredients that are combined to create the substitutions. The quantities are saved so that you know how much you'll get by using that combination.
+            For example, you may want to substitute a cup of chicken broth with a cup of vegetable broth.
+            In some cases, you may need multiple ingredients to replace a single ingredient. A common substitution for baking powder is 1/2 teaspoon cream of tartar and 1/4 teaspoon baking soda.
+        </p>
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide8')">
+    <p class="card-header-title">
+      Sort Results
+    </p>
+  </header>
+  <div class="card-content" id="hide8">
+    <div class="content">
+        <p>If you're looking to hit certain macronutrient goals, you can change the search results from alphabetical order to a specific criterion.
+        </p>
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide9')">
+    <p class="card-header-title">
+      Favorites
+    </p>
+  </header>
+  <div class="card-content" id="hide9">
+    <div class="content">
+        <p>If you're logged in, you can click the <i class="far fa-star" style="color:#880"></i> star icon on a recipe's page to save it as a favorite. To remove a recipe from your favorites, click the <i class="fas fa-star" style="color: #EE4"></i> on the recipe's page.  You can view your favorites from the home page.
+        </p>     
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide29')">
+    <p class="card-header-title">
+    Serving Size Adjustment
+    </p>
+  </header>
+  <div class="card-content" id="hide29">
+    <div class="content">
+    <p>On the recipe page, you can change how many servings you want to create and the quantities of ingredients used will be adjusted automatically. Click on the + plus or - minus buttons to set the serving size, then click on the serving number itself to change the ingredient quantities.</p>
+    
+    <p>The smallest measurement allowed is 1/16 of the unit of measure. Please note that very small measurements that are reduced by the serving size adjustment may end up as 0. Use your best judgment on the actual quantity to incorporate into your meal, especially when it comes to ingredients like eggs, liquids, and seasoning.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card is-primary">
+  <header class="card-header" onclick="toggleHide('hide39')">
+    <p class="card-header-title">
+    Tracking Preparation Progress
+    </p>
+  </header>
+  <div class="card-content" id="hide39">
+    <div class="content">
+    <p>On the recipe page, you can click on instruction steps or ingredients to cross them off. This might help you keep track of where you were if you get distracted during cooking, or if you like to gather ingredients before starting.</p>
+    <p>Crossing off substituted ingredients isn't supported at this time. Instead, you'll be taken to your substitutions page.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}

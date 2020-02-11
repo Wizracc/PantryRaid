@@ -1,0 +1,6 @@
+[run]
+omit =
+    pantry_raid/raid.py
+    pantry_raid/config.py
+    pantry_raid/models/forms/*
+    */__init__.py

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block title %} - Register {% endblock %}
+
+{% block content %}
+
+    <h1 class="title">Register User</h1>
+
+    <form method="POST">
+        <fieldset>
+            <strong>Register</strong><br/>
+            {{ form.hidden_tag() }}
+
+            <p>
+            {{ form.username.label }}<br/>
+            {{ form.username }}
+
+            {% for err in form.username.errors %}
+                <div class="has-text-danger">{{ err }}</div>
+            {% endfor %}
+            <br/>
+
+            {{ form.email.label }}<br/>
+            {{ form.email }}
+            {% for err in form.email.errors %}
+                <div class="has-text-danger">{{ err }}</div>
+            {% endfor %}
+            </p>
+            <br/>
+
+            <p>
+            {{ form.password.label }}<br/>
+            {{ form.password }}
+            {% for err in form.password.errors %}
+                <div class="has-text-danger">{{ err }}</div>
+            {% endfor %}
+            <br/>
+            {{ form.confirm_password.label}}<br/>
+            {{ form.confirm_password }}
+            {% for err in form.confirm_password.errors %}
+                <div class="has-text-danger">{{ err }}</div>
+            {% endfor %}
+            </p>
+            <br/>
+
+            {{ form.submit }}
+        </fieldset>
+    </form>
+
+{% endblock %}

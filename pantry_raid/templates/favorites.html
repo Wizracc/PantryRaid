@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} - Favorite Recipes {% endblock %}
+
+{% block content %}
+    <h1 class="title">My Favorite Recipes</h1>
+    <ul>
+    {% for f in favorites %}
+        <li><a href="{{ url_for('routes.recipe', rid=f) }}">{{ app.db.get_recipe_by_id(f)['name'] }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

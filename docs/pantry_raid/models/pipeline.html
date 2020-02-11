@@ -1,0 +1,821 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>pantry_raid.models.pipeline API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pantry_raid.models.pipeline</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Pipeline(object):
+    &#34;&#34;&#34;Represents a pipeline to be used by a `pymongo.Collection.aggregate()` call.
+
+    A pipeline is a series of operations to be performed on a collection, typically to perform advanced search functions. The order of steps is important, as aggregration operations are performed only on the document as it exists at that step in the pipeline. If the first operation in a pipeline is a match operation, then subsequent operations are only going to operate against that set of matched documents.
+
+    Attributes
+    ----------
+    operations : list[dict]
+        Ordered list of aggregation operations to be performed on a collection
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.operations = []
+
+    def add_subset_aggregation(self, field, required_set):
+        &#34;&#34;&#34;Adds pipeline operations to get only documents where `field` is a subset of `required_set`.
+
+        Params
+        ------
+        field : string
+            Field in documents to check
+
+        required_set : list[string] or set[string]
+            Set to perform subset operation against
+        &#34;&#34;&#34;
+        doc_projection = &#34;doc&#34;
+        operator = &#34;setIsSubset&#34;
+        self.add_array_projection_doc(operator, field, required_set, doc_projection)
+        self.add_boolean_match_projection(f&#34;{operator}_{field}&#34;, doc_projection)
+        self.replace_root(doc_projection)
+
+    def add_set_intersection_aggregation(self, field, other_set):
+        &#34;&#34;&#34;Adds pipeline operations to get only documents where the result of a set intersection between `field` and `other_set` is a nonzero array.
+
+        Params
+        ------
+        field : string
+            Field in document containing the array
+
+        other_set: list[string] or set[string]
+            Set to intersect the contents of `field` with
+        &#34;&#34;&#34;
+        doc_projection = &#34;doc&#34;
+        operator = &#34;setIntersection&#34;
+        self.add_array_projection_doc(operator, field, other_set, doc_projection)
+        result_field = &#34;intersection_gtzero&#34;
+        self.project_array_size_above_zero_aggregation(f&#34;{operator}_{field}&#34;, result_field, doc_projection)
+        self.flatten_projected_doc(doc_projection, result_field)
+        self.add_boolean_match_projection(result_field, doc_projection)
+        self.replace_root(doc_projection)
+
+    def flatten_projected_doc(self, doc_projection, *sibling_fields):
+        &#34;&#34;&#34;Unwinds a nested `$$ROOT` while retaining the contents of `sibling_fields` as part of the flattened document. During pipeline operations, the entire document is typically stored in `doc_projection` to retain its contents, and the results of an aggregation operation is stored in one or more `sibling_fields`. As a result, the `doc_projection` field would contain a `doc_projection` field itself that actually has the document. This function replaces the root with the original document and adds the `sibling_fields` so that pipeline processing may continue.
+
+        Params
+        ------
+        doc_projection : string
+            Field containing the original document
+
+        sibling_fields : string
+            One or more fields that exist adjacent to the `doc_projection` field, created through other pipeline operations. Multiple fields would be passed in by calling the function as `flatten_projected_doc(&#34;doc&#34;, &#34;field1&#34;, &#34;field2&#34;, ..., &#34;fieldN&#34;)`.
+        &#34;&#34;&#34;
+        keep_fields = {
+            f&#34;{doc_projection}.{sf}&#34;: f&#34;${sf}&#34;
+            for sf in sibling_fields
+        }
+        self.add_operation_by_kvp(&#34;$addFields&#34;, keep_fields)
+        self.replace_root(doc_projection)
+
+    def replace_root(self, doc_projection):
+        &#34;&#34;&#34;Replaces the root of the document with the contents of `doc_projection`.
+
+        Params
+        ------
+        doc_projection : string
+            Field to promote as new root
+        &#34;&#34;&#34;
+        newRoot = { &#34;newRoot&#34;: f&#34;${doc_projection}&#34; }
+        self.add_operation_by_kvp(&#34;$replaceRoot&#34;, newRoot)
+
+    def add_boolean_match_projection(self, agg_field, doc_projection):
+        &#34;&#34;&#34;Collects documents in the pipeline where `agg_field` is `True` and projects (returns in the pipeline) only the value of `doc_projection`.
+
+        Parameters
+        ----------
+        agg_field : string
+            Field in the documents that should be true for the document to continue through the pipeline
+
+        doc_projection : string
+            Field in the documents that holds the original document
+        &#34;&#34;&#34;
+        aggregateMatch = { agg_field: True }
+        self.add_operation_by_kvp(&#34;$match&#34;, aggregateMatch)
+
+        projectDocument = { doc_projection: True }
+        self.add_operation_by_kvp(&#34;$project&#34;, projectDocument)
+
+    def add_array_projection_doc(self, operator, field, operand_array, doc_projection):
+        &#34;&#34;&#34;Adds pipeline operations to perform an array operation and store the result in a top-level field of the result document, `{operator}_{field}`, with a sibling field, `{doc_projection}`, that contains the actual document matched. The contents of `{operator}_{field}` will be an array.
+
+        Params
+        ------
+        operator : string
+            MongoDB array aggregation operator that returns an array
+
+        field : string
+            Field in document database to operate on
+
+        operand_array : list
+            Array to operate the field contents against
+
+        doc_projection : string
+            Field to store the original document in
+        &#34;&#34;&#34;
+        # The field must be prepended by a &#34;$&#34; for MongoDB to substitute the value of the field during the operation
+        cash_field = f&#34;${field}&#34; if field[0] != &#39;$&#39; else f&#34;{field}&#34;
+        aggregateOperand = {
+            doc_projection: &#34;$$ROOT&#34;,  # Get the entire document for each match and refer to it as `doc_projection`
+            f&#34;{operator}_{field}&#34;: {  # Perform the operation
+                f&#34;${operator}&#34;: [ cash_field, operand_array ]
+            }
+        }
+        # Projection stores the original document as `doc_projection` and the results of the aggregation in another field.
+        self.add_operation_by_kvp(&#34;$project&#34;, aggregateOperand)
+
+    def project_array_size_above_zero_aggregation(self, array_field, result_field, doc_projection):
+        &#34;&#34;&#34;Checks if the size of an array field created through aggregation was larger than zero. For example, if a set intersection result was of size 0, then no elements were in common in the two arrays intersected. The result is stored in the field `{result_field}`.
+
+        Params
+        ------
+        array_field : string
+            Field containing an array
+
+        result_field : string
+            Field to store the results of the check in
+
+        doc_projection : string
+            Field containing the original document
+        &#34;&#34;&#34;
+        arrayProjection = {
+            doc_projection: &#34;$$ROOT&#34;,
+            result_field: {
+                &#34;$cond&#34;: {
+                    &#34;if&#34;: { &#34;$gt&#34;: [{ &#34;$size&#34;: f&#34;${array_field}&#34; }, 0] },
+                    &#34;then&#34;: True,
+                    &#34;else&#34;: False
+                }
+            }
+        }
+        self.add_operation_by_kvp(&#34;$project&#34;, arrayProjection)
+
+    def add_operation_by_kvp(self, key, value):
+        &#34;&#34;&#34;Add a generic pipeline operation by a key-value pair.
+
+        Parameters
+        ----------
+        key : string
+            The aggregation operator to use. Must be prefixed with a &#34;$&#34;. See https://docs.mongodb.com/v4.0/reference/operator/aggregation/ for valid operators.
+
+        value : dict
+            Operands or predicate for this operation
+        &#34;&#34;&#34;
+        self.operations.append({
+            key: value
+        })
+
+    def remove__id(self):
+        &#34;&#34;&#34;Remove the &#34;_id&#34; field from results.&#34;&#34;&#34;
+        self.add_operation_by_kvp(&#34;$project&#34;, {
+            &#34;_id&#34;: False
+        })
+
+    def add_filter(self, filtr):
+        &#34;&#34;&#34;Adds matching against a Filter to the pipeline.
+
+        Parameters
+        ----------
+        filtr : pantry_raid.models.filter.Filter
+            Filter to match against
+        &#34;&#34;&#34;
+        if filtr is not None:
+            self.add_operation_by_kvp(&#34;$match&#34;, filtr.doc)
+
+    def add_sort_options(self, sort_options):
+        &#34;&#34;&#34;Adds sort options to the pipeline
+
+        Parameters
+        ----------
+        sort_options : pantry_raid.models.sortoptions.SortOptions
+            Sort options to sort by
+        &#34;&#34;&#34;
+        if sort_options is not None:
+            self.add_operation_by_kvp(&#34;$sort&#34;, sort_options.doc)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pantry_raid.models.pipeline.Pipeline"><code class="flex name class">
+<span>class <span class="ident">Pipeline</span></span>
+</code></dt>
+<dd>
+<section class="desc"><p>Represents a pipeline to be used by a <code>pymongo.Collection.aggregate()</code> call.</p>
+<p>A pipeline is a series of operations to be performed on a collection, typically to perform advanced search functions. The order of steps is important, as aggregration operations are performed only on the document as it exists at that step in the pipeline. If the first operation in a pipeline is a match operation, then subsequent operations are only going to operate against that set of matched documents.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>operations</code></strong> :&ensp;<code>list</code>[<code>dict</code>]</dt>
+<dd>Ordered list of aggregation operations to be performed on a collection</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Pipeline(object):
+    &#34;&#34;&#34;Represents a pipeline to be used by a `pymongo.Collection.aggregate()` call.
+
+    A pipeline is a series of operations to be performed on a collection, typically to perform advanced search functions. The order of steps is important, as aggregration operations are performed only on the document as it exists at that step in the pipeline. If the first operation in a pipeline is a match operation, then subsequent operations are only going to operate against that set of matched documents.
+
+    Attributes
+    ----------
+    operations : list[dict]
+        Ordered list of aggregation operations to be performed on a collection
+    &#34;&#34;&#34;
+
+    def __init__(self):
+        self.operations = []
+
+    def add_subset_aggregation(self, field, required_set):
+        &#34;&#34;&#34;Adds pipeline operations to get only documents where `field` is a subset of `required_set`.
+
+        Params
+        ------
+        field : string
+            Field in documents to check
+
+        required_set : list[string] or set[string]
+            Set to perform subset operation against
+        &#34;&#34;&#34;
+        doc_projection = &#34;doc&#34;
+        operator = &#34;setIsSubset&#34;
+        self.add_array_projection_doc(operator, field, required_set, doc_projection)
+        self.add_boolean_match_projection(f&#34;{operator}_{field}&#34;, doc_projection)
+        self.replace_root(doc_projection)
+
+    def add_set_intersection_aggregation(self, field, other_set):
+        &#34;&#34;&#34;Adds pipeline operations to get only documents where the result of a set intersection between `field` and `other_set` is a nonzero array.
+
+        Params
+        ------
+        field : string
+            Field in document containing the array
+
+        other_set: list[string] or set[string]
+            Set to intersect the contents of `field` with
+        &#34;&#34;&#34;
+        doc_projection = &#34;doc&#34;
+        operator = &#34;setIntersection&#34;
+        self.add_array_projection_doc(operator, field, other_set, doc_projection)
+        result_field = &#34;intersection_gtzero&#34;
+        self.project_array_size_above_zero_aggregation(f&#34;{operator}_{field}&#34;, result_field, doc_projection)
+        self.flatten_projected_doc(doc_projection, result_field)
+        self.add_boolean_match_projection(result_field, doc_projection)
+        self.replace_root(doc_projection)
+
+    def flatten_projected_doc(self, doc_projection, *sibling_fields):
+        &#34;&#34;&#34;Unwinds a nested `$$ROOT` while retaining the contents of `sibling_fields` as part of the flattened document. During pipeline operations, the entire document is typically stored in `doc_projection` to retain its contents, and the results of an aggregation operation is stored in one or more `sibling_fields`. As a result, the `doc_projection` field would contain a `doc_projection` field itself that actually has the document. This function replaces the root with the original document and adds the `sibling_fields` so that pipeline processing may continue.
+
+        Params
+        ------
+        doc_projection : string
+            Field containing the original document
+
+        sibling_fields : string
+            One or more fields that exist adjacent to the `doc_projection` field, created through other pipeline operations. Multiple fields would be passed in by calling the function as `flatten_projected_doc(&#34;doc&#34;, &#34;field1&#34;, &#34;field2&#34;, ..., &#34;fieldN&#34;)`.
+        &#34;&#34;&#34;
+        keep_fields = {
+            f&#34;{doc_projection}.{sf}&#34;: f&#34;${sf}&#34;
+            for sf in sibling_fields
+        }
+        self.add_operation_by_kvp(&#34;$addFields&#34;, keep_fields)
+        self.replace_root(doc_projection)
+
+    def replace_root(self, doc_projection):
+        &#34;&#34;&#34;Replaces the root of the document with the contents of `doc_projection`.
+
+        Params
+        ------
+        doc_projection : string
+            Field to promote as new root
+        &#34;&#34;&#34;
+        newRoot = { &#34;newRoot&#34;: f&#34;${doc_projection}&#34; }
+        self.add_operation_by_kvp(&#34;$replaceRoot&#34;, newRoot)
+
+    def add_boolean_match_projection(self, agg_field, doc_projection):
+        &#34;&#34;&#34;Collects documents in the pipeline where `agg_field` is `True` and projects (returns in the pipeline) only the value of `doc_projection`.
+
+        Parameters
+        ----------
+        agg_field : string
+            Field in the documents that should be true for the document to continue through the pipeline
+
+        doc_projection : string
+            Field in the documents that holds the original document
+        &#34;&#34;&#34;
+        aggregateMatch = { agg_field: True }
+        self.add_operation_by_kvp(&#34;$match&#34;, aggregateMatch)
+
+        projectDocument = { doc_projection: True }
+        self.add_operation_by_kvp(&#34;$project&#34;, projectDocument)
+
+    def add_array_projection_doc(self, operator, field, operand_array, doc_projection):
+        &#34;&#34;&#34;Adds pipeline operations to perform an array operation and store the result in a top-level field of the result document, `{operator}_{field}`, with a sibling field, `{doc_projection}`, that contains the actual document matched. The contents of `{operator}_{field}` will be an array.
+
+        Params
+        ------
+        operator : string
+            MongoDB array aggregation operator that returns an array
+
+        field : string
+            Field in document database to operate on
+
+        operand_array : list
+            Array to operate the field contents against
+
+        doc_projection : string
+            Field to store the original document in
+        &#34;&#34;&#34;
+        # The field must be prepended by a &#34;$&#34; for MongoDB to substitute the value of the field during the operation
+        cash_field = f&#34;${field}&#34; if field[0] != &#39;$&#39; else f&#34;{field}&#34;
+        aggregateOperand = {
+            doc_projection: &#34;$$ROOT&#34;,  # Get the entire document for each match and refer to it as `doc_projection`
+            f&#34;{operator}_{field}&#34;: {  # Perform the operation
+                f&#34;${operator}&#34;: [ cash_field, operand_array ]
+            }
+        }
+        # Projection stores the original document as `doc_projection` and the results of the aggregation in another field.
+        self.add_operation_by_kvp(&#34;$project&#34;, aggregateOperand)
+
+    def project_array_size_above_zero_aggregation(self, array_field, result_field, doc_projection):
+        &#34;&#34;&#34;Checks if the size of an array field created through aggregation was larger than zero. For example, if a set intersection result was of size 0, then no elements were in common in the two arrays intersected. The result is stored in the field `{result_field}`.
+
+        Params
+        ------
+        array_field : string
+            Field containing an array
+
+        result_field : string
+            Field to store the results of the check in
+
+        doc_projection : string
+            Field containing the original document
+        &#34;&#34;&#34;
+        arrayProjection = {
+            doc_projection: &#34;$$ROOT&#34;,
+            result_field: {
+                &#34;$cond&#34;: {
+                    &#34;if&#34;: { &#34;$gt&#34;: [{ &#34;$size&#34;: f&#34;${array_field}&#34; }, 0] },
+                    &#34;then&#34;: True,
+                    &#34;else&#34;: False
+                }
+            }
+        }
+        self.add_operation_by_kvp(&#34;$project&#34;, arrayProjection)
+
+    def add_operation_by_kvp(self, key, value):
+        &#34;&#34;&#34;Add a generic pipeline operation by a key-value pair.
+
+        Parameters
+        ----------
+        key : string
+            The aggregation operator to use. Must be prefixed with a &#34;$&#34;. See https://docs.mongodb.com/v4.0/reference/operator/aggregation/ for valid operators.
+
+        value : dict
+            Operands or predicate for this operation
+        &#34;&#34;&#34;
+        self.operations.append({
+            key: value
+        })
+
+    def remove__id(self):
+        &#34;&#34;&#34;Remove the &#34;_id&#34; field from results.&#34;&#34;&#34;
+        self.add_operation_by_kvp(&#34;$project&#34;, {
+            &#34;_id&#34;: False
+        })
+
+    def add_filter(self, filtr):
+        &#34;&#34;&#34;Adds matching against a Filter to the pipeline.
+
+        Parameters
+        ----------
+        filtr : pantry_raid.models.filter.Filter
+            Filter to match against
+        &#34;&#34;&#34;
+        if filtr is not None:
+            self.add_operation_by_kvp(&#34;$match&#34;, filtr.doc)
+
+    def add_sort_options(self, sort_options):
+        &#34;&#34;&#34;Adds sort options to the pipeline
+
+        Parameters
+        ----------
+        sort_options : pantry_raid.models.sortoptions.SortOptions
+            Sort options to sort by
+        &#34;&#34;&#34;
+        if sort_options is not None:
+            self.add_operation_by_kvp(&#34;$sort&#34;, sort_options.doc)</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pantry_raid.models.pipeline.Pipeline.add_array_projection_doc"><code class="name flex">
+<span>def <span class="ident">add_array_projection_doc</span></span>(<span>self, operator, field, operand_array, doc_projection)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds pipeline operations to perform an array operation and store the result in a top-level field of the result document, <code>{operator}_{field}</code>, with a sibling field, <code>{doc_projection}</code>, that contains the actual document matched. The contents of <code>{operator}_{field}</code> will be an array.</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>operator</code></strong> :&ensp;<code>string</code></dt>
+<dd>MongoDB array aggregation operator that returns an array</dd>
+<dt><strong><code>field</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field in document database to operate on</dd>
+<dt><strong><code>operand_array</code></strong> :&ensp;<code>list</code></dt>
+<dd>Array to operate the field contents against</dd>
+<dt><strong><code>doc_projection</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field to store the original document in</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_array_projection_doc(self, operator, field, operand_array, doc_projection):
+    &#34;&#34;&#34;Adds pipeline operations to perform an array operation and store the result in a top-level field of the result document, `{operator}_{field}`, with a sibling field, `{doc_projection}`, that contains the actual document matched. The contents of `{operator}_{field}` will be an array.
+
+    Params
+    ------
+    operator : string
+        MongoDB array aggregation operator that returns an array
+
+    field : string
+        Field in document database to operate on
+
+    operand_array : list
+        Array to operate the field contents against
+
+    doc_projection : string
+        Field to store the original document in
+    &#34;&#34;&#34;
+    # The field must be prepended by a &#34;$&#34; for MongoDB to substitute the value of the field during the operation
+    cash_field = f&#34;${field}&#34; if field[0] != &#39;$&#39; else f&#34;{field}&#34;
+    aggregateOperand = {
+        doc_projection: &#34;$$ROOT&#34;,  # Get the entire document for each match and refer to it as `doc_projection`
+        f&#34;{operator}_{field}&#34;: {  # Perform the operation
+            f&#34;${operator}&#34;: [ cash_field, operand_array ]
+        }
+    }
+    # Projection stores the original document as `doc_projection` and the results of the aggregation in another field.
+    self.add_operation_by_kvp(&#34;$project&#34;, aggregateOperand)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.add_boolean_match_projection"><code class="name flex">
+<span>def <span class="ident">add_boolean_match_projection</span></span>(<span>self, agg_field, doc_projection)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Collects documents in the pipeline where <code>agg_field</code> is <code>True</code> and projects (returns in the pipeline) only the value of <code>doc_projection</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>agg_field</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field in the documents that should be true for the document to continue through the pipeline</dd>
+<dt><strong><code>doc_projection</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field in the documents that holds the original document</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_boolean_match_projection(self, agg_field, doc_projection):
+    &#34;&#34;&#34;Collects documents in the pipeline where `agg_field` is `True` and projects (returns in the pipeline) only the value of `doc_projection`.
+
+    Parameters
+    ----------
+    agg_field : string
+        Field in the documents that should be true for the document to continue through the pipeline
+
+    doc_projection : string
+        Field in the documents that holds the original document
+    &#34;&#34;&#34;
+    aggregateMatch = { agg_field: True }
+    self.add_operation_by_kvp(&#34;$match&#34;, aggregateMatch)
+
+    projectDocument = { doc_projection: True }
+    self.add_operation_by_kvp(&#34;$project&#34;, projectDocument)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.add_filter"><code class="name flex">
+<span>def <span class="ident">add_filter</span></span>(<span>self, filtr)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds matching against a Filter to the pipeline.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filtr</code></strong> :&ensp;<a title="pantry_raid.models.filter.Filter" href="filter.html#pantry_raid.models.filter.Filter"><code>Filter</code></a></dt>
+<dd>Filter to match against</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_filter(self, filtr):
+    &#34;&#34;&#34;Adds matching against a Filter to the pipeline.
+
+    Parameters
+    ----------
+    filtr : pantry_raid.models.filter.Filter
+        Filter to match against
+    &#34;&#34;&#34;
+    if filtr is not None:
+        self.add_operation_by_kvp(&#34;$match&#34;, filtr.doc)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.add_operation_by_kvp"><code class="name flex">
+<span>def <span class="ident">add_operation_by_kvp</span></span>(<span>self, key, value)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Add a generic pipeline operation by a key-value pair.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>key</code></strong> :&ensp;<code>string</code></dt>
+<dd>The aggregation operator to use. Must be prefixed with a "$". See <a href="https://docs.mongodb.com/v4.0/reference/operator/aggregation/">https://docs.mongodb.com/v4.0/reference/operator/aggregation/</a> for valid operators.</dd>
+<dt><strong><code>value</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Operands or predicate for this operation</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_operation_by_kvp(self, key, value):
+    &#34;&#34;&#34;Add a generic pipeline operation by a key-value pair.
+
+    Parameters
+    ----------
+    key : string
+        The aggregation operator to use. Must be prefixed with a &#34;$&#34;. See https://docs.mongodb.com/v4.0/reference/operator/aggregation/ for valid operators.
+
+    value : dict
+        Operands or predicate for this operation
+    &#34;&#34;&#34;
+    self.operations.append({
+        key: value
+    })</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.add_set_intersection_aggregation"><code class="name flex">
+<span>def <span class="ident">add_set_intersection_aggregation</span></span>(<span>self, field, other_set)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds pipeline operations to get only documents where the result of a set intersection between <code>field</code> and <code>other_set</code> is a nonzero array.</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>field</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field in document containing the array</dd>
+<dt><strong><code>other_set</code></strong> :&ensp;<code>list</code>[<code>string</code>] or <code>set</code>[<code>string</code>]</dt>
+<dd>Set to intersect the contents of <code>field</code> with</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_set_intersection_aggregation(self, field, other_set):
+    &#34;&#34;&#34;Adds pipeline operations to get only documents where the result of a set intersection between `field` and `other_set` is a nonzero array.
+
+    Params
+    ------
+    field : string
+        Field in document containing the array
+
+    other_set: list[string] or set[string]
+        Set to intersect the contents of `field` with
+    &#34;&#34;&#34;
+    doc_projection = &#34;doc&#34;
+    operator = &#34;setIntersection&#34;
+    self.add_array_projection_doc(operator, field, other_set, doc_projection)
+    result_field = &#34;intersection_gtzero&#34;
+    self.project_array_size_above_zero_aggregation(f&#34;{operator}_{field}&#34;, result_field, doc_projection)
+    self.flatten_projected_doc(doc_projection, result_field)
+    self.add_boolean_match_projection(result_field, doc_projection)
+    self.replace_root(doc_projection)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.add_sort_options"><code class="name flex">
+<span>def <span class="ident">add_sort_options</span></span>(<span>self, sort_options)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds sort options to the pipeline</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>sort_options</code></strong> :&ensp;<a title="pantry_raid.models.sortoptions.SortOptions" href="sortoptions.html#pantry_raid.models.sortoptions.SortOptions"><code>SortOptions</code></a></dt>
+<dd>Sort options to sort by</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_sort_options(self, sort_options):
+    &#34;&#34;&#34;Adds sort options to the pipeline
+
+    Parameters
+    ----------
+    sort_options : pantry_raid.models.sortoptions.SortOptions
+        Sort options to sort by
+    &#34;&#34;&#34;
+    if sort_options is not None:
+        self.add_operation_by_kvp(&#34;$sort&#34;, sort_options.doc)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.add_subset_aggregation"><code class="name flex">
+<span>def <span class="ident">add_subset_aggregation</span></span>(<span>self, field, required_set)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds pipeline operations to get only documents where <code>field</code> is a subset of <code>required_set</code>.</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>field</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field in documents to check</dd>
+<dt><strong><code>required_set</code></strong> :&ensp;<code>list</code>[<code>string</code>] or <code>set</code>[<code>string</code>]</dt>
+<dd>Set to perform subset operation against</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_subset_aggregation(self, field, required_set):
+    &#34;&#34;&#34;Adds pipeline operations to get only documents where `field` is a subset of `required_set`.
+
+    Params
+    ------
+    field : string
+        Field in documents to check
+
+    required_set : list[string] or set[string]
+        Set to perform subset operation against
+    &#34;&#34;&#34;
+    doc_projection = &#34;doc&#34;
+    operator = &#34;setIsSubset&#34;
+    self.add_array_projection_doc(operator, field, required_set, doc_projection)
+    self.add_boolean_match_projection(f&#34;{operator}_{field}&#34;, doc_projection)
+    self.replace_root(doc_projection)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.flatten_projected_doc"><code class="name flex">
+<span>def <span class="ident">flatten_projected_doc</span></span>(<span>self, doc_projection, *sibling_fields)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Unwinds a nested <code>$$ROOT</code> while retaining the contents of <code>sibling_fields</code> as part of the flattened document. During pipeline operations, the entire document is typically stored in <code>doc_projection</code> to retain its contents, and the results of an aggregation operation is stored in one or more <code>sibling_fields</code>. As a result, the <code>doc_projection</code> field would contain a <code>doc_projection</code> field itself that actually has the document. This function replaces the root with the original document and adds the <code>sibling_fields</code> so that pipeline processing may continue.</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>doc_projection</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field containing the original document</dd>
+<dt><strong><code>sibling_fields</code></strong> :&ensp;<code>string</code></dt>
+<dd>One or more fields that exist adjacent to the <code>doc_projection</code> field, created through other pipeline operations. Multiple fields would be passed in by calling the function as <code>flatten_projected_doc("doc", "field1", "field2", ..., "fieldN")</code>.</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def flatten_projected_doc(self, doc_projection, *sibling_fields):
+    &#34;&#34;&#34;Unwinds a nested `$$ROOT` while retaining the contents of `sibling_fields` as part of the flattened document. During pipeline operations, the entire document is typically stored in `doc_projection` to retain its contents, and the results of an aggregation operation is stored in one or more `sibling_fields`. As a result, the `doc_projection` field would contain a `doc_projection` field itself that actually has the document. This function replaces the root with the original document and adds the `sibling_fields` so that pipeline processing may continue.
+
+    Params
+    ------
+    doc_projection : string
+        Field containing the original document
+
+    sibling_fields : string
+        One or more fields that exist adjacent to the `doc_projection` field, created through other pipeline operations. Multiple fields would be passed in by calling the function as `flatten_projected_doc(&#34;doc&#34;, &#34;field1&#34;, &#34;field2&#34;, ..., &#34;fieldN&#34;)`.
+    &#34;&#34;&#34;
+    keep_fields = {
+        f&#34;{doc_projection}.{sf}&#34;: f&#34;${sf}&#34;
+        for sf in sibling_fields
+    }
+    self.add_operation_by_kvp(&#34;$addFields&#34;, keep_fields)
+    self.replace_root(doc_projection)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.project_array_size_above_zero_aggregation"><code class="name flex">
+<span>def <span class="ident">project_array_size_above_zero_aggregation</span></span>(<span>self, array_field, result_field, doc_projection)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Checks if the size of an array field created through aggregation was larger than zero. For example, if a set intersection result was of size 0, then no elements were in common in the two arrays intersected. The result is stored in the field <code>{result_field}</code>.</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>array_field</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field containing an array</dd>
+<dt><strong><code>result_field</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field to store the results of the check in</dd>
+<dt><strong><code>doc_projection</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field containing the original document</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def project_array_size_above_zero_aggregation(self, array_field, result_field, doc_projection):
+    &#34;&#34;&#34;Checks if the size of an array field created through aggregation was larger than zero. For example, if a set intersection result was of size 0, then no elements were in common in the two arrays intersected. The result is stored in the field `{result_field}`.
+
+    Params
+    ------
+    array_field : string
+        Field containing an array
+
+    result_field : string
+        Field to store the results of the check in
+
+    doc_projection : string
+        Field containing the original document
+    &#34;&#34;&#34;
+    arrayProjection = {
+        doc_projection: &#34;$$ROOT&#34;,
+        result_field: {
+            &#34;$cond&#34;: {
+                &#34;if&#34;: { &#34;$gt&#34;: [{ &#34;$size&#34;: f&#34;${array_field}&#34; }, 0] },
+                &#34;then&#34;: True,
+                &#34;else&#34;: False
+            }
+        }
+    }
+    self.add_operation_by_kvp(&#34;$project&#34;, arrayProjection)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.remove__id"><code class="name flex">
+<span>def <span class="ident">remove__id</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Remove the "_id" field from results.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def remove__id(self):
+    &#34;&#34;&#34;Remove the &#34;_id&#34; field from results.&#34;&#34;&#34;
+    self.add_operation_by_kvp(&#34;$project&#34;, {
+        &#34;_id&#34;: False
+    })</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.pipeline.Pipeline.replace_root"><code class="name flex">
+<span>def <span class="ident">replace_root</span></span>(<span>self, doc_projection)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Replaces the root of the document with the contents of <code>doc_projection</code>.</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>doc_projection</code></strong> :&ensp;<code>string</code></dt>
+<dd>Field to promote as new root</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def replace_root(self, doc_projection):
+    &#34;&#34;&#34;Replaces the root of the document with the contents of `doc_projection`.
+
+    Params
+    ------
+    doc_projection : string
+        Field to promote as new root
+    &#34;&#34;&#34;
+    newRoot = { &#34;newRoot&#34;: f&#34;${doc_projection}&#34; }
+    self.add_operation_by_kvp(&#34;$replaceRoot&#34;, newRoot)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pantry_raid.models" href="index.html">pantry_raid.models</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pantry_raid.models.pipeline.Pipeline" href="#pantry_raid.models.pipeline.Pipeline">Pipeline</a></code></h4>
+<ul class="">
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.add_array_projection_doc" href="#pantry_raid.models.pipeline.Pipeline.add_array_projection_doc">add_array_projection_doc</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.add_boolean_match_projection" href="#pantry_raid.models.pipeline.Pipeline.add_boolean_match_projection">add_boolean_match_projection</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.add_filter" href="#pantry_raid.models.pipeline.Pipeline.add_filter">add_filter</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.add_operation_by_kvp" href="#pantry_raid.models.pipeline.Pipeline.add_operation_by_kvp">add_operation_by_kvp</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.add_set_intersection_aggregation" href="#pantry_raid.models.pipeline.Pipeline.add_set_intersection_aggregation">add_set_intersection_aggregation</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.add_sort_options" href="#pantry_raid.models.pipeline.Pipeline.add_sort_options">add_sort_options</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.add_subset_aggregation" href="#pantry_raid.models.pipeline.Pipeline.add_subset_aggregation">add_subset_aggregation</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.flatten_projected_doc" href="#pantry_raid.models.pipeline.Pipeline.flatten_projected_doc">flatten_projected_doc</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.project_array_size_above_zero_aggregation" href="#pantry_raid.models.pipeline.Pipeline.project_array_size_above_zero_aggregation">project_array_size_above_zero_aggregation</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.remove__id" href="#pantry_raid.models.pipeline.Pipeline.remove__id">remove__id</a></code></li>
+<li><code><a title="pantry_raid.models.pipeline.Pipeline.replace_root" href="#pantry_raid.models.pipeline.Pipeline.replace_root">replace_root</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

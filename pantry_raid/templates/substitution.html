@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %} - Ingredient Substitutions {% endblock %}
+
+{% block content %}
+    <h1 class="title">My Substitutions</h1>
+    <div class="columns">
+        <div class="column">
+            <h2><strong>Add a New Substitution</strong></h2>
+            {% if data.status %}
+                <div class="{{ data.status.css }}">{{ data.status.text }}</div>
+            {% endif %}
+<form autocomplete="off" method="POST" name="add" action="{{ url_for('routes.substitute') }}">
+    <fieldset>
+    {{ form.hidden_tag() }}
+    <div class="grid-container">
+        <div class="search-grid-item">
+            <strong>{{ form.target_qty.label }}</strong>
+            {{ form.target_qty }}
+        </div>
+        <div class="search-grid-item">
+            <strong>{{ form.add_target.label }}</strong>
+            {{ form.add_target }}
+        </div>
+    </div>
+
+    <div id="subs_container">
+        <div id="subs_body" class="grid-container">
+            <div class="search-grid-item">
+                <strong>Ingredients to Use for Substitution</strong>
+                {{ form.add_ingredient(**{
+                    "onclick": "addSubstitute({}), 'subs_container'".format(data.ingredients),
+                    "class": "link-button"
+                }) }}
+            </div>
+            {% for sub in form.substitute %}
+            {{ sub.form.hidden_tag() }}
+            <div class="search-grid-item" style="padding-top: 0">{{ loop.index }}. 
+                {{ sub.form.quantity }}
+                {{ sub.form.ingredient }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div style="padding-top: 1em">
+    {{ form.submit }}
+    </div>
+</fieldset>
+</form>
+</div>{# End column #}
+        <div class="column">
+            <h2><strong>Current Substitutions</strong></h2>
+
+            <form method="POST" name="remove" action="{{ url_for('routes.substitute') }}">
+{% for datum in data.substitutions %} {% set outer_loop = loop %}
+    <div style="padding-top: 1.5em;"><strong>{{ datum.quantity }} {{ datum.name }}</strong> <button type="submit" class="link-button" name="remove" value="{{ outer_loop.index0 }}"><i class="fa fa-trash-alt"></i></button></div>
+    <ul>
+        {% for item in datum.get('items') %}
+        <li style="padding-left: 1.5em;">
+        {{ item.get('quantity', '') }} {{ item.get('ingredient', '') }}
+        </li>
+        {% endfor %}
+{% endfor %}
+            </ul>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='autocomplete.js') }}"></script>
+    <script src="{{ url_for('static', filename='add-substitute.js') }}"></script>
+    <script> // Add autocomplete to the first field
+        autocomplete(document.getElementById("target"), {{ data.ingredients | tojson }});
+        autocomplete(document.getElementById("sub_ingredient"), {{ data.ingredients | tojson }});
+    </script>
+{% endblock %}

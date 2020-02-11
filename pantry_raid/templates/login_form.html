@@ -1,0 +1,26 @@
+    <form method="POST">
+        <fieldset>
+            <strong>Login</strong>
+            {{ form.hidden_tag() }}
+
+            <p>
+                {{ form.username.label }}<br/>
+                {{ form.username }}
+                {% for err in form.username.errors %}
+                    <div class="has-text-danger">{{ err }}</div>
+                {% endfor %}
+            </p>
+            <br/>
+
+            <p>
+            {{ form.password.label }}<br/>
+            {{ form.password }}
+            {% for err in form.password.errors %}
+                <div class="has-text-danger">{{ err }}</div>
+            {% endfor %}
+            </p>
+            <br/>
+
+            {{ form.submit }}
+        </fieldset>
+    </form>

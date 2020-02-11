@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>pantry_raid.models.mongocollection API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pantry_raid.models.mongocollection</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from abc import ABC
+from pantry_raid.models.filter import Filter
+from pantry_raid.models.pipeline import Pipeline
+from pantry_raid.models.sortoptions import SortOptions
+&#34;&#34;&#34;
+The &#34;# noqa&#34; directive tells flake8 to ignore the warning on the below line.
+Inheritors of this class do need MongoClient, but those functions aren&#39;t implemented in the abstract.
+&#34;&#34;&#34;
+from pymongo import MongoClient  # noqa: F401
+from pymongo.collation import Collation
+from itertools import chain
+
+
+class MongoCollection(ABC):
+    &#34;&#34;&#34;Abstract wrapper class around a `pymongo.Collection`.
+
+    Attributes
+    ----------
+    collection : pymongo.Collection
+        MongoDB collection
+
+    collection_key : string
+        Key for the main field in the collection, e.g., &#39;pantry&#39;, &#39;ingredients&#39;, etc. This must be set in the inheritor&#39;s constructor.
+    &#34;&#34;&#34;
+
+    def __init__(self, collection):
+        &#34;&#34;&#34;Constructor for abstract wrapper class around a `pymongo.Collection`.
+
+        Parameters
+        ----------
+        collection : pymongo.Collection
+            MongoDB collection
+        &#34;&#34;&#34;
+        self.collection = collection
+
+    def get_as_list(self):
+        &#34;&#34;&#34;Get the contents of the main field as a list.
+
+        Returns
+        -------
+        list[dict]
+            Deduplicated list of entries in the field &#39;collection_key&#39; or all entries in the collection.
+        &#34;&#34;&#34;
+        try:
+            return list(set(self.collection.find_one({}, { &#39;_id&#39;: False })[self.collection_key]))
+        except AttributeError:
+            return list(self.collection.find({}, { &#39;_id&#39;: False }))
+
+    def flatten_nested_dict_lists(self, dicts):
+        &#34;&#34;&#34;DEPRECATED. Retained for possible future use.
+
+        Flattens a list of lists of dictionaries.
+
+        Parameters
+        ----------
+        dicts : list[list[dict]]
+            List of lists of dictionaries
+
+        Returns
+        -------
+        list[dict]
+            Flattened version of original list
+        &#34;&#34;&#34;
+        if type(dicts[0]) is list:
+            dicts = list(chain.from_iterable(dicts))
+        return dicts
+
+    def deduplicate_document_list(self, docs):
+        &#34;&#34;&#34;DEPRECATED. Retained for possible future use.
+
+        Removes all duplicates from a list of Documents.
+        Two documents are the same if their ID is the same.
+        Credit: https://stackoverflow.com/questions/11092511
+
+        Parameters
+        ----------
+        docs : list[dict]
+            List of documents with potentially duplicate entries
+
+        Returns
+        -------
+        list[dict]
+            List of documents without any duplicate entries
+        &#34;&#34;&#34;
+        docs = self.flatten_nested_dict_lists(docs)
+        return [ i for n, i in enumerate(docs) if i not in docs[n + 1:] ]
+
+    def get_subset(self, field, required_set, data):
+        &#34;&#34;&#34;Gets documents from this collection whose contents of `field` are subsets of `required_set`.
+
+        Optionally, applies a query against the documents that are the subset to further narrow search results.
+
+        Parameters
+        ----------
+        field : string
+            Name of the field in this collection
+
+        required_set : list
+            The list of items that the contents of `field` should be a subset of
+
+        filters : pantry_raid.models.filter.Filter
+            Filters to apply after getting valid recipes.
+
+        Returns
+        -------
+        list[dict]
+            List of documents satisfying the subset requirement
+        &#34;&#34;&#34;
+
+        pipeline = Pipeline()
+        pipeline.add_subset_aggregation(field, required_set)
+
+        if data is not None:
+            pipeline.add_filter(Filter(data.get(&#39;filters&#39;)))
+            pipeline.add_sort_options(SortOptions(data.get(&#39;sort_options&#39;)))
+
+            if data.get(&#39;tags&#39;) is not None and len(data.get(&#39;tags&#39;)) &gt; 0:
+                pipeline.add_set_intersection_aggregation(&#39;tags&#39;, data.get(&#39;tags&#39;))
+
+        pipeline.remove__id()
+
+        return list(self.collection.aggregate(pipeline.operations, collation=Collation(&#34;en&#34;, numericOrdering=True)))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pantry_raid.models.mongocollection.MongoCollection"><code class="flex name class">
+<span>class <span class="ident">MongoCollection</span></span>
+<span>(</span><span>collection)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Abstract wrapper class around a <code>pymongo.Collection</code>.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>collection</code></strong> :&ensp;<code>pymongo.Collection</code></dt>
+<dd>MongoDB collection</dd>
+<dt><strong><code>collection_key</code></strong> :&ensp;<code>string</code></dt>
+<dd>Key for the main field in the collection, e.g., 'pantry', 'ingredients', etc. This must be set in the inheritor's constructor.</dd>
+</dl>
+<p>Constructor for abstract wrapper class around a <code>pymongo.Collection</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>collection</code></strong> :&ensp;<code>pymongo.Collection</code></dt>
+<dd>MongoDB collection</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class MongoCollection(ABC):
+    &#34;&#34;&#34;Abstract wrapper class around a `pymongo.Collection`.
+
+    Attributes
+    ----------
+    collection : pymongo.Collection
+        MongoDB collection
+
+    collection_key : string
+        Key for the main field in the collection, e.g., &#39;pantry&#39;, &#39;ingredients&#39;, etc. This must be set in the inheritor&#39;s constructor.
+    &#34;&#34;&#34;
+
+    def __init__(self, collection):
+        &#34;&#34;&#34;Constructor for abstract wrapper class around a `pymongo.Collection`.
+
+        Parameters
+        ----------
+        collection : pymongo.Collection
+            MongoDB collection
+        &#34;&#34;&#34;
+        self.collection = collection
+
+    def get_as_list(self):
+        &#34;&#34;&#34;Get the contents of the main field as a list.
+
+        Returns
+        -------
+        list[dict]
+            Deduplicated list of entries in the field &#39;collection_key&#39; or all entries in the collection.
+        &#34;&#34;&#34;
+        try:
+            return list(set(self.collection.find_one({}, { &#39;_id&#39;: False })[self.collection_key]))
+        except AttributeError:
+            return list(self.collection.find({}, { &#39;_id&#39;: False }))
+
+    def flatten_nested_dict_lists(self, dicts):
+        &#34;&#34;&#34;DEPRECATED. Retained for possible future use.
+
+        Flattens a list of lists of dictionaries.
+
+        Parameters
+        ----------
+        dicts : list[list[dict]]
+            List of lists of dictionaries
+
+        Returns
+        -------
+        list[dict]
+            Flattened version of original list
+        &#34;&#34;&#34;
+        if type(dicts[0]) is list:
+            dicts = list(chain.from_iterable(dicts))
+        return dicts
+
+    def deduplicate_document_list(self, docs):
+        &#34;&#34;&#34;DEPRECATED. Retained for possible future use.
+
+        Removes all duplicates from a list of Documents.
+        Two documents are the same if their ID is the same.
+        Credit: https://stackoverflow.com/questions/11092511
+
+        Parameters
+        ----------
+        docs : list[dict]
+            List of documents with potentially duplicate entries
+
+        Returns
+        -------
+        list[dict]
+            List of documents without any duplicate entries
+        &#34;&#34;&#34;
+        docs = self.flatten_nested_dict_lists(docs)
+        return [ i for n, i in enumerate(docs) if i not in docs[n + 1:] ]
+
+    def get_subset(self, field, required_set, data):
+        &#34;&#34;&#34;Gets documents from this collection whose contents of `field` are subsets of `required_set`.
+
+        Optionally, applies a query against the documents that are the subset to further narrow search results.
+
+        Parameters
+        ----------
+        field : string
+            Name of the field in this collection
+
+        required_set : list
+            The list of items that the contents of `field` should be a subset of
+
+        filters : pantry_raid.models.filter.Filter
+            Filters to apply after getting valid recipes.
+
+        Returns
+        -------
+        list[dict]
+            List of documents satisfying the subset requirement
+        &#34;&#34;&#34;
+
+        pipeline = Pipeline()
+        pipeline.add_subset_aggregation(field, required_set)
+
+        if data is not None:
+            pipeline.add_filter(Filter(data.get(&#39;filters&#39;)))
+            pipeline.add_sort_options(SortOptions(data.get(&#39;sort_options&#39;)))
+
+            if data.get(&#39;tags&#39;) is not None and len(data.get(&#39;tags&#39;)) &gt; 0:
+                pipeline.add_set_intersection_aggregation(&#39;tags&#39;, data.get(&#39;tags&#39;))
+
+        pipeline.remove__id()
+
+        return list(self.collection.aggregate(pipeline.operations, collation=Collation(&#34;en&#34;, numericOrdering=True)))</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="pantry_raid.models.favorites.Favorites" href="favorites.html#pantry_raid.models.favorites.Favorites">Favorites</a></li>
+<li><a title="pantry_raid.models.ingredients.Ingredients" href="ingredients.html#pantry_raid.models.ingredients.Ingredients">Ingredients</a></li>
+<li><a title="pantry_raid.models.pantry.Pantry" href="pantry.html#pantry_raid.models.pantry.Pantry">Pantry</a></li>
+<li><a title="pantry_raid.models.recipes.Recipes" href="recipes.html#pantry_raid.models.recipes.Recipes">Recipes</a></li>
+<li><a title="pantry_raid.models.usercollection.UserCollection" href="usercollection.html#pantry_raid.models.usercollection.UserCollection">UserCollection</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pantry_raid.models.mongocollection.MongoCollection.deduplicate_document_list"><code class="name flex">
+<span>def <span class="ident">deduplicate_document_list</span></span>(<span>self, docs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>DEPRECATED. Retained for possible future use.</p>
+<p>Removes all duplicates from a list of Documents.
+Two documents are the same if their ID is the same.
+Credit: <a href="https://stackoverflow.com/questions/11092511">https://stackoverflow.com/questions/11092511</a></p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>docs</code></strong> :&ensp;<code>list</code>[<code>dict</code>]</dt>
+<dd>List of documents with potentially duplicate entries</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code>[<code>dict</code>]</dt>
+<dd>List of documents without any duplicate entries</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def deduplicate_document_list(self, docs):
+    &#34;&#34;&#34;DEPRECATED. Retained for possible future use.
+
+    Removes all duplicates from a list of Documents.
+    Two documents are the same if their ID is the same.
+    Credit: https://stackoverflow.com/questions/11092511
+
+    Parameters
+    ----------
+    docs : list[dict]
+        List of documents with potentially duplicate entries
+
+    Returns
+    -------
+    list[dict]
+        List of documents without any duplicate entries
+    &#34;&#34;&#34;
+    docs = self.flatten_nested_dict_lists(docs)
+    return [ i for n, i in enumerate(docs) if i not in docs[n + 1:] ]</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.mongocollection.MongoCollection.flatten_nested_dict_lists"><code class="name flex">
+<span>def <span class="ident">flatten_nested_dict_lists</span></span>(<span>self, dicts)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>DEPRECATED. Retained for possible future use.</p>
+<p>Flattens a list of lists of dictionaries.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>dicts</code></strong> :&ensp;<code>list</code>[<code>list</code>[<code>dict</code>]]</dt>
+<dd>List of lists of dictionaries</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code>[<code>dict</code>]</dt>
+<dd>Flattened version of original list</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def flatten_nested_dict_lists(self, dicts):
+    &#34;&#34;&#34;DEPRECATED. Retained for possible future use.
+
+    Flattens a list of lists of dictionaries.
+
+    Parameters
+    ----------
+    dicts : list[list[dict]]
+        List of lists of dictionaries
+
+    Returns
+    -------
+    list[dict]
+        Flattened version of original list
+    &#34;&#34;&#34;
+    if type(dicts[0]) is list:
+        dicts = list(chain.from_iterable(dicts))
+    return dicts</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.mongocollection.MongoCollection.get_as_list"><code class="name flex">
+<span>def <span class="ident">get_as_list</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Get the contents of the main field as a list.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code>[<code>dict</code>]</dt>
+<dd>Deduplicated list of entries in the field 'collection_key' or all entries in the collection.</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_as_list(self):
+    &#34;&#34;&#34;Get the contents of the main field as a list.
+
+    Returns
+    -------
+    list[dict]
+        Deduplicated list of entries in the field &#39;collection_key&#39; or all entries in the collection.
+    &#34;&#34;&#34;
+    try:
+        return list(set(self.collection.find_one({}, { &#39;_id&#39;: False })[self.collection_key]))
+    except AttributeError:
+        return list(self.collection.find({}, { &#39;_id&#39;: False }))</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.mongocollection.MongoCollection.get_subset"><code class="name flex">
+<span>def <span class="ident">get_subset</span></span>(<span>self, field, required_set, data)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets documents from this collection whose contents of <code>field</code> are subsets of <code>required_set</code>.</p>
+<p>Optionally, applies a query against the documents that are the subset to further narrow search results.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>field</code></strong> :&ensp;<code>string</code></dt>
+<dd>Name of the field in this collection</dd>
+<dt><strong><code>required_set</code></strong> :&ensp;<code>list</code></dt>
+<dd>The list of items that the contents of <code>field</code> should be a subset of</dd>
+<dt><strong><code>filters</code></strong> :&ensp;<a title="pantry_raid.models.filter.Filter" href="filter.html#pantry_raid.models.filter.Filter"><code>Filter</code></a></dt>
+<dd>Filters to apply after getting valid recipes.</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code>[<code>dict</code>]</dt>
+<dd>List of documents satisfying the subset requirement</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_subset(self, field, required_set, data):
+    &#34;&#34;&#34;Gets documents from this collection whose contents of `field` are subsets of `required_set`.
+
+    Optionally, applies a query against the documents that are the subset to further narrow search results.
+
+    Parameters
+    ----------
+    field : string
+        Name of the field in this collection
+
+    required_set : list
+        The list of items that the contents of `field` should be a subset of
+
+    filters : pantry_raid.models.filter.Filter
+        Filters to apply after getting valid recipes.
+
+    Returns
+    -------
+    list[dict]
+        List of documents satisfying the subset requirement
+    &#34;&#34;&#34;
+
+    pipeline = Pipeline()
+    pipeline.add_subset_aggregation(field, required_set)
+
+    if data is not None:
+        pipeline.add_filter(Filter(data.get(&#39;filters&#39;)))
+        pipeline.add_sort_options(SortOptions(data.get(&#39;sort_options&#39;)))
+
+        if data.get(&#39;tags&#39;) is not None and len(data.get(&#39;tags&#39;)) &gt; 0:
+            pipeline.add_set_intersection_aggregation(&#39;tags&#39;, data.get(&#39;tags&#39;))
+
+    pipeline.remove__id()
+
+    return list(self.collection.aggregate(pipeline.operations, collation=Collation(&#34;en&#34;, numericOrdering=True)))</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pantry_raid.models" href="index.html">pantry_raid.models</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pantry_raid.models.mongocollection.MongoCollection" href="#pantry_raid.models.mongocollection.MongoCollection">MongoCollection</a></code></h4>
+<ul class="">
+<li><code><a title="pantry_raid.models.mongocollection.MongoCollection.deduplicate_document_list" href="#pantry_raid.models.mongocollection.MongoCollection.deduplicate_document_list">deduplicate_document_list</a></code></li>
+<li><code><a title="pantry_raid.models.mongocollection.MongoCollection.flatten_nested_dict_lists" href="#pantry_raid.models.mongocollection.MongoCollection.flatten_nested_dict_lists">flatten_nested_dict_lists</a></code></li>
+<li><code><a title="pantry_raid.models.mongocollection.MongoCollection.get_as_list" href="#pantry_raid.models.mongocollection.MongoCollection.get_as_list">get_as_list</a></code></li>
+<li><code><a title="pantry_raid.models.mongocollection.MongoCollection.get_subset" href="#pantry_raid.models.mongocollection.MongoCollection.get_subset">get_subset</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

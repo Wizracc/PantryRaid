@@ -1,0 +1,18 @@
+<div class="grid-item">
+  <div class="tile_container">
+    <a href="{{ url_for('routes.recipe', rid=result.id) }}">
+      <div class="tile">
+        <img src="{{ result.image }}" style="object-fit: contain">
+      </div>
+      <div class="recipe_container">
+        {{ result.name }}
+      </div>
+    </a>
+    <div class="nutrition_info">
+      <ul>
+        <li style="display: inline; padding-left: 15%; float: left"><i class="fas fa-users"></i>{{ result.servings }}</li>
+        <li style="display: inline; float: right; padding-right: 15%"><i class="far fa-clock"></i>{{ result['prep-time'] }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

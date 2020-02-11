@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>pantry_raid.models.forms.buttons API documentation</title>
+<meta name="description" content="Adapted from https://gist.github.com/doobeh/239b1e4586c7425e5114" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pantry_raid.models.forms.buttons</code></h1>
+</header>
+<section id="section-intro">
+<p>Adapted from <a href="https://gist.github.com/doobeh/239b1e4586c7425e5114">https://gist.github.com/doobeh/239b1e4586c7425e5114</a></p>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">&#34;&#34;&#34;Adapted from https://gist.github.com/doobeh/239b1e4586c7425e5114&#34;&#34;&#34;
+from wtforms import StringField
+from wtforms.widgets import HTMLString, html_params
+
+
+class ButtonWidget(object):
+    &#34;&#34;&#34;Renders a button. Pass HTML params, like `onclick`, as keyword arguments during instantiation.&#34;&#34;&#34;
+    html_params = staticmethod(html_params)
+
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault(&#39;type&#39;, &#39;button&#39;)
+        return HTMLString(f&#34;&lt;button {self.html_params(**kwargs)}&gt;{field.label.text}&lt;/button&gt;&#34;)
+
+
+class CustomButton(StringField):
+    &#34;&#34;&#34;Button to add text field filter (pinned ingredients)&#34;&#34;&#34;
+    widget = ButtonWidget()</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pantry_raid.models.forms.buttons.ButtonWidget"><code class="flex name class">
+<span>class <span class="ident">ButtonWidget</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Renders a button. Pass HTML params, like <code>onclick</code>, as keyword arguments during instantiation.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class ButtonWidget(object):
+    &#34;&#34;&#34;Renders a button. Pass HTML params, like `onclick`, as keyword arguments during instantiation.&#34;&#34;&#34;
+    html_params = staticmethod(html_params)
+
+    def __call__(self, field, **kwargs):
+        kwargs.setdefault(&#39;type&#39;, &#39;button&#39;)
+        return HTMLString(f&#34;&lt;button {self.html_params(**kwargs)}&gt;{field.label.text}&lt;/button&gt;&#34;)</code></pre>
+</details>
+<h3>Static methods</h3>
+<dl>
+<dt id="pantry_raid.models.forms.buttons.ButtonWidget.html_params"><code class="name flex">
+<span>def <span class="ident">html_params</span></span>(<span>**kwargs)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Generate HTML attribute syntax from inputted keyword arguments.</p>
+<p>The output value is sorted by the passed keys, to provide consistent output
+each time this function is called with the same parameters. Because of the
+frequent use of the normally reserved keywords <code>class</code> and <code>for</code>, suffixing
+these with an underscore will allow them to be used.</p>
+<p>In order to facilitate the use of <code>data-</code> attributes, the first underscore
+behind the <code>data</code>-element is replaced with a hyphen.</p>
+<pre><code>&gt;&gt;&gt; html_params(data_any_attribute='something')
+'data-any_attribute="something"'
+</code></pre>
+<p>In addition, the values <code>True</code> and <code>False</code> are special:
+* <code>attr=True</code> generates the HTML compact output of a boolean attribute,
+e.g. <code>checked=True</code> will generate simply <code>checked</code>
+* <code>attr=False</code> will be ignored and generate no output.</p>
+<pre><code>&gt;&gt;&gt; html_params(name='text1', id='f', class_='text')
+'class="text" id="f" name="text1"'
+&gt;&gt;&gt; html_params(checked=True, readonly=False, name="text1", abc="hello")
+</code></pre>
+<p>'abc="hello" checked name="text1"'</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def html_params(**kwargs):
+    &#34;&#34;&#34;
+    Generate HTML attribute syntax from inputted keyword arguments.
+
+    The output value is sorted by the passed keys, to provide consistent output
+    each time this function is called with the same parameters. Because of the
+    frequent use of the normally reserved keywords `class` and `for`, suffixing
+    these with an underscore will allow them to be used.
+
+    In order to facilitate the use of ``data-`` attributes, the first underscore
+    behind the ``data``-element is replaced with a hyphen.
+
+    &gt;&gt;&gt; html_params(data_any_attribute=&#39;something&#39;)
+    &#39;data-any_attribute=&#34;something&#34;&#39;
+
+    In addition, the values ``True`` and ``False`` are special:
+      * ``attr=True`` generates the HTML compact output of a boolean attribute,
+        e.g. ``checked=True`` will generate simply ``checked``
+      * ``attr=False`` will be ignored and generate no output.
+
+    &gt;&gt;&gt; html_params(name=&#39;text1&#39;, id=&#39;f&#39;, class_=&#39;text&#39;)
+    &#39;class=&#34;text&#34; id=&#34;f&#34; name=&#34;text1&#34;&#39;
+    &gt;&gt;&gt; html_params(checked=True, readonly=False, name=&#34;text1&#34;, abc=&#34;hello&#34;)
+    &#39;abc=&#34;hello&#34; checked name=&#34;text1&#34;&#39;
+    &#34;&#34;&#34;
+    params = []
+    for k, v in sorted(iteritems(kwargs)):
+        if k in (&#39;class_&#39;, &#39;class__&#39;, &#39;for_&#39;):
+            k = k[:-1]
+        elif k.startswith(&#39;data_&#39;):
+            k = k.replace(&#39;_&#39;, &#39;-&#39;)
+        if v is True:
+            params.append(k)
+        elif v is False:
+            pass
+        else:
+            params.append(&#39;%s=&#34;%s&#34;&#39; % (text_type(k), escape(text_type(v), quote=True)))
+    return &#39; &#39;.join(params)</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+<dt id="pantry_raid.models.forms.buttons.CustomButton"><code class="flex name class">
+<span>class <span class="ident">CustomButton</span></span>
+<span>(</span><span>label=None, validators=None, filters=(), description='', id=None, default=None, widget=None, render_kw=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Button to add text field filter (pinned ingredients)</p>
+<p>Construct a new field.</p>
+<p>:param label:
+The label of the field.
+:param validators:
+A sequence of validators to call when <code>validate</code> is called.
+:param filters:
+A sequence of filters which are run on input data by <code>process</code>.
+:param description:
+A description for the field, typically used for help text.
+:param id:
+An id to use for the field. A reasonable default is set by the form,
+and you shouldn't need to set this manually.
+:param default:
+The default value to assign to the field, if no form or object
+input is provided. May be a callable.
+:param widget:
+If provided, overrides the widget used to render the field.
+:param dict render_kw:
+If provided, a dictionary which provides default keywords that
+will be given to the widget at render time.
+:param _form:
+The form holding this field. It is passed by the form itself during
+construction. You should never pass this value yourself.
+:param _name:
+The name of this field, passed by the enclosing form during its
+construction. You should never pass this value yourself.
+:param _prefix:
+The prefix to prepend to the form name of this field, passed by
+the enclosing form during construction.
+:param _translations:
+A translations object providing message translations. Usually
+passed by the enclosing form during construction. See
+:doc:<code>I18n docs &lt;i18n&gt;</code> for information on message translations.
+:param _meta:
+If provided, this is the 'meta' instance from the form. You usually
+don't pass this yourself.</p>
+<p>If <code>_form</code> and <code>_name</code> isn't provided, an :class:<code>UnboundField</code> will be
+returned instead. Call its :func:<code>bind</code> method with a form instance and
+a name to construct the field.</p></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class CustomButton(StringField):
+    &#34;&#34;&#34;Button to add text field filter (pinned ingredients)&#34;&#34;&#34;
+    widget = ButtonWidget()</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>wtforms.fields.core.StringField</li>
+<li>wtforms.fields.core.Field</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="pantry_raid.models.forms.buttons.CustomButton.widget"><code class="name">var <span class="ident">widget</span></code></dt>
+<dd>
+<section class="desc"></section>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pantry_raid.models.forms" href="index.html">pantry_raid.models.forms</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pantry_raid.models.forms.buttons.ButtonWidget" href="#pantry_raid.models.forms.buttons.ButtonWidget">ButtonWidget</a></code></h4>
+<ul class="">
+<li><code><a title="pantry_raid.models.forms.buttons.ButtonWidget.html_params" href="#pantry_raid.models.forms.buttons.ButtonWidget.html_params">html_params</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="pantry_raid.models.forms.buttons.CustomButton" href="#pantry_raid.models.forms.buttons.CustomButton">CustomButton</a></code></h4>
+<ul class="">
+<li><code><a title="pantry_raid.models.forms.buttons.CustomButton.widget" href="#pantry_raid.models.forms.buttons.CustomButton.widget">widget</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

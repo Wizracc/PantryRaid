@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>add-substitute.js</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+    
+    <ul class="sections">
+        
+          <li id="title">
+              <div class="annotation">
+                  <h1>add-substitute.js</h1>
+              </div>
+          </li>
+        
+        
+        
+        <li id="section-1">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h2 id="adds-fields-for-an-additional-substitute-ingredient-to-the-form">Adds fields for an additional substitute ingredient to the form.</h2>
+<h2 id="parameters"><strong>Parameters</strong></h2>
+<p><code>autocomplete_list</code> : Array
+     Array of elements used by the autocompletion function.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">addSubstitute</span>(<span class="hljs-params">autocomplete_list</span>) </span>{</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-2">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>The “target” element contains a custom attribute, <code>numIngredients</code>, used to track how many ingredients are in the substitution.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> target_element = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"target"</span>);
+    <span class="hljs-keyword">var</span> total_ingredients = <span class="hljs-built_in">parseInt</span>(target_element.getAttribute(<span class="hljs-string">"numIngredients"</span>))
+    total_ingredients++;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-3">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <p>The IDs for the new elements must follow a specific pattern for Flask and WTForms to recognize them as part of a form.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> new_ing_id = <span class="hljs-string">"substitute-"</span> + total_ingredients +<span class="hljs-string">"-ingredient"</span>;
+    <span class="hljs-keyword">var</span> new_qty_id = <span class="hljs-string">"substitute-"</span> + total_ingredients +<span class="hljs-string">"-quantity"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-4">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Set up the new elements here.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> ing_container = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">"div"</span>);
+    ing_container.style = <span class="hljs-string">"display: table-row"</span>;
+    ing_container.innerHTML = <span class="hljs-string">"&lt;div style=\"display: table-cell\"&gt;&lt;input type=\"text\" name=\""</span> + new_qty_id + <span class="hljs-string">"\"&gt;&lt;/div&gt;&lt;div style=\"display: table-cell\"&gt;&lt;input type=\"text\" id=\""</span> + new_ing_id + <span class="hljs-string">"\" name=\""</span> + new_ing_id + <span class="hljs-string">"\"&gt;&lt;/div&gt;&lt;/div&gt;"</span>;</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-5">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <p>Add the elements to the parent (container).</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    <span class="hljs-keyword">var</span> parent = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">"subs_container"</span>)
+    parent.appendChild(ing_container);
+    target_element.setAttribute(<span class="hljs-string">"numIngredients"</span>, total_ingredients);</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-6">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Enable autocompletion of the ingredient field only.</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>    autocomplete(<span class="hljs-built_in">document</span>.getElementById(new_ing_id), autocomplete_list);
+}</pre></div></div>
+            
+        </li>
+        
+    </ul>
+  </div>
+</body>
+</html>

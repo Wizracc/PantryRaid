@@ -1,0 +1,44 @@
+{
+    "_id": "test",
+    "password": "sha256$mf7poum5$c7559974b127f5803ddb67d3bca42ac557bf310f4c3e51fefbaae662b9a5b086",
+    "email": "test@email.cx",
+    "bad_logins": 0,
+    "last_bad_login": 0,
+    "pantry": [
+        "mango chutney",
+        "mashed bananas",
+        "turkey sausage",
+        "buffalo",
+        "whole chicken",
+        "salt and pepper",
+        "Dijon-style prepared mustard",
+        "beer",
+        "Italian-style salad dressing",
+        "chicken breast halves",
+        "margarine",
+        "cream cheese",
+        "condensed cream of chicken soup",
+        "butter",
+        "white wine",
+        "condensed golden mushroom soup",
+        "cream cheese with chives",
+        "angel hair pasta",
+        "taco seasoning mix",
+        "salsa",
+        "Cheddar cheese",
+        "sour cream"
+    ],
+    "favorites": [],
+    "substitutes": [
+        {
+            "name": "thing",
+            "quantity": "none",
+            "items": [
+                {
+                    "ingredient": "whatever",
+                    "quantity": "any"
+                }
+            ]
+        }
+    ]
+}

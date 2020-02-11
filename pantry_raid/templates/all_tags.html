@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} - All Tags {% endblock %}
+
+{% block content %}
+    <h1 class="title">All Tags</h1>
+    <ul>
+    {% for tag in tags %}
+        <li><a href="{{ url_for('routes.tags', tag=tag) }}">{{ tag }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}

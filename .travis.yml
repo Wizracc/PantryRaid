@@ -1,0 +1,18 @@
+language: python
+
+install:
+  - pip install -r requirements.txt
+
+# commands to run for testing/linting
+script:
+  - flake8
+  - pytest
+  - rm -rf docs/pantry_raid && pdoc pantry_raid --html --output-dir docs --force
+
+# Updates docs on a build of master branch
+deploy:
+  skip_cleanup: yes
+  provider: script
+  script: .travis/autodocs.sh
+  on:
+    branch: master

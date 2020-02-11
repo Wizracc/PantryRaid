@@ -1,0 +1,16 @@
+<script src="https://kit.fontawesome.com/e66d7c4b73.js"></script>
+{% if matches|length > 0 %}
+  <br/>
+  <p>We found the following
+      {% if matches|length == 1 %} recipe {% else %} recipes {% endif %}
+       that you can make with your pantry right now:</p>
+  <ul>
+    <div class="grid-container">
+      {% for result in matches %}
+        {% include 'recipe_card.html' %}
+      {% endfor %}
+    </div>
+  </ul>
+{% else %}
+  <p>There were no matches. Adjust your search filters or add more ingredients to your pantry.</p>
+{% endif %}

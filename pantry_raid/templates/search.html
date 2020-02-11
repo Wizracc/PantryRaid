@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block title %} - Search {% endblock %}
+
+{% block content %}
+<h1 class="title">Search</h1>
+
+<form method="POST" action="{{ url_for('routes.search') }}">
+    <fieldset style="flex: 1;">
+        <div id="filters" class="search-container">
+            <div class="search-grid-item">
+                <strong>Pinned Ingredients</strong>
+                    {{ form.add_pinned(**{
+                        "onclick": "addFilter({}, 'pinned_ingredients', 'pinned_counter')".format(pantry.pantry),
+                        "class": "link-button"
+                    }) }}
+                    <br/>
+                    <span id="pinned_counter" value=0 />{# Alternative to localStorage #}
+                    <div id="pinned_ingredients">{{ form.pinned_ingredients }}</div>
+            </div>
+            <div class="search-grid-item">
+                <strong>Excluded Ingredients</strong>
+                {{ form.add_excluded(**{
+                    "onclick": "addFilter({}, 'excluded_ingredients', 'excluded_counter')".format(pantry.ingredients),
+                    "class": "link-button"
+                }) }}
+                <br/>
+                <span id="excluded_counter" value=0 />{# Alternative to localStorage #}
+                <div id="excluded_ingredients">{{ form.excluded_ingredients }}</div>
+            </div>
+            <div class="search-grid-item">
+                <strong>{{ form.prep_time.label }}</strong> {{ form.prep_time }}
+            </div>
+            <div class="search-grid-item"><strong>{{ form.macronutrients.label }}</strong>
+                    {{ form.macronutrients }}
+                    {{ form.compare_options }}
+                    {{ form.macronutrient_value }}
+            </div>
+            <div class="search-grid-item"><strong>{{ form.tags.label }}</strong><br/>
+                    {{ form.tags(
+                        size=form.tags.choices|length,
+                        style="overflow-y: hidden"
+                    ) }}
+            </div>
+            <div class="search-grid-item">
+                {{ form.use_subs }}<strong>{{ form.use_subs.label }}</strong><br/><br/>
+                <strong>Sort</strong> {{ form.sort_options }}
+            </div>
+        </div>{# End grid-container #}
+    <footer class="search-button-footer">{{ form.submit }}</footer>
+    </fieldset>
+</form>
+<script src="{{ url_for('static', filename='autocomplete.js') }}"></script>
+<script src="{{ url_for('static', filename='add-filter.js') }}"></script>
+{% if matches is defined %}
+    {% include 'search_results.html' %}
+{% endif %}
+{% endblock %}

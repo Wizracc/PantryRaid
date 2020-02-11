@@ -1,0 +1,191 @@
+// Example overridden variables
+$primary: #111111;
+$dark: #111111;
+$other_dark: #2b2828;
+$text: #bfbfbf;
+@import 'bulma/bulma.sass';
+// How to compile: sass pantry_raid\static\main.scss pantry_raid\static\main.css
+// If you can get pantry_raid\static\main.scss --watch to work you can have it auto compile...
+// !important is used to override certain bulma preset variables
+
+// Custom variables
+$link: #468ac0;
+$link_hover: #36A97A;
+$title: #979aa0;
+$tile_background: #3e424a;
+$strong_color: #EEEEEE;
+
+
+// Style button elements as links
+button.link-button {
+    border: none;
+    outline: none;
+    background: none;
+    cursor: pointer;
+    color: $link;
+    padding: 0 0 0 0.5em;
+    text-decoration: underline;
+    font-family: inherit;
+    font-size: inherit;
+}
+button.link-button:hover {
+    color: $link_hover;
+}
+
+.card-header-title{
+    color:white;
+}
+
+.card-header{
+    box-shadow:inset 0px 0px 2px #468ac0
+}
+
+.card-header:hover{
+    background: #272b35;
+}
+
+.card{
+    margin:10px;
+    background-color:#1d1f23;
+}
+
+.card-content{
+    display:none;
+}
+
+h1, h4, p, .autocomplete-items {
+    color: $text;
+}
+
+.tile_container:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.tile_container {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    border-radius: 5px;
+    padding: 5px 5px;
+    border-radius: 15px;
+    background-color: $tile_background;
+    height: 100%;
+}
+
+img {
+    border-radius: 15px;
+    padding: 10px 10px;
+}
+
+/* Desktop behavior */
+@media (min-width: 768px) {
+    .grid-container {
+        display: grid;
+        height: auto;
+        width: auto;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+/* Mobile behavior */
+.grid-container {
+        display: grid;
+        height: auto;
+        width: auto;
+        grid-template-columns: repeat(auto-fill, minmax(1fr, 33%));
+    }
+
+.grid-item {
+    text-align: center;
+    padding: 5% 5%;
+}
+
+/* Mobile behavior */
+.search-container {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Desktop behavior */
+@media (min-width: 768px) {
+    .search-container {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-rows: 1fr auto;
+    }
+}
+
+.search-grid-item {
+    padding-top: 5%;
+}
+
+footer.search-button-footer {
+    grid-column: 1/-1; // Span all grid-columns
+    text-align: center;
+    display: block;
+    padding-top: 5%;
+}
+
+#strike{
+    cursor: pointer;
+    text-decoration: line-through;
+}
+
+#nostrike{
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#navBarContainer{
+    background-color: $dark;
+}
+
+.recipe_container {
+    padding: 2px 16px;
+}
+
+strong {
+    color: $strong_color;
+}
+
+html {
+    background-color: $other_dark;
+}
+
+i {
+    padding-right: .3em !important;
+}
+
+a {
+    color: $link;
+}
+
+a:hover {
+    color: $link_hover;
+}
+
+.title {
+    color: $title;
+}
+
+/* Tabular divs */
+div.table {
+    display: table;
+    background-color: $other_dark;
+}
+div.table-header {
+    display: table-header-group;
+    background-color: $other_dark;
+    color: $strong_color;
+    font-weight: bold;
+}
+div.table-body {
+    display: table-row-group;
+    background-color: $other_dark;
+}
+div.table-row {
+    display: table-row;
+    background-color: $other_dark;
+}
+div.table-cell {
+    display: table-cell;
+    background-color: $other_dark;
+}

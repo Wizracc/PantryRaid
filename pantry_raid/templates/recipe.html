@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %} - {{ recipe.name }} {% endblock %}
+{% block content %}
+    <h1 class="title">{{ recipe.name }}
+    <label for="star">
+            {% if recipe.id in favorites %}
+                <i id="s" class="fas fa-star" style="color: #EE4;"></i>
+            {% else %}
+                <i id="s" class="far fa-star" style="color: #880"></i>
+            {% endif %}
+    </label>
+    </h1>
+    {% if user.is_active %}
+    <div class="star">
+        <form method="POST" action="{{ url_for('routes.recipe', rid=recipe.id) }}" name="favorites" id="fav">
+            <input type="submit" id="star" value="star" hidden=true>
+        </form>
+    </div>
+    {% endif %}
+    <div class="columns">
+        <div class="column">
+            <img src="{{ recipe.image }}" alt="{{ recipe.name }}" value="{{ recipe.servings }}"/>
+            <div class="columns column">
+                <div class="column">
+                    Serves <span id="originalSize">{{ recipe.servings }}</span>.
+
+                    <button type="button" id="minus" onclick="minusone()">-</button>
+                    <button type="button" id="servingsize" value="{{ recipe.servings }}" onclick='changeservingsize({{ recipe | tojson }})'>{{ recipe.servings }}</button>
+                    <button type="button" id="plus" onclick="plusone()">+</button>
+                </div>
+                <div class="prep_time column">
+                    Prep Time: {{ recipe['prep-time'] }}
+                </div>
+            </div>
+            <div style="padding-top: 10px;">
+                <div class="instructions" style="padding-top: 10px;">
+                    <h2><strong>Instructions</strong></h2>
+                    <ol>
+                        {% for step in recipe.instructions %}
+                            <li id="nostrike" onclick="strike(this)">{{ step }}</li>
+                        {% endfor %}
+                    </ol>
+
+                </div>
+            </div>
+        </div>
+        <div class="column" id="in">
+      <div class ="ingredients_column" style="padding-top:10px;">
+            <h2><strong>Ingredients</strong></h2>
+            <ul id="inlist">
+                {% for ingredient in recipe.ingredients %}
+                {% if user.is_active and recipe.ingredient_names[loop.index0] not in user.database.pantry %}
+                    <li class="has-text-info"><a href="{{ url_for('routes.substitute') }}">Substituted: {{ ingredient }}</a></li>
+                {% else %}
+                    <li id="nostrike" onclick="strike(this)">{{ ingredient }}</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+      </div>
+      <script src="{{ url_for('static', filename='strike.js') }}"></script>
+        <div class="nutrition_column" id="in" style="padding-top: 3em;">
+                <h2><strong>Nutritional Information per serving</strong></h2>
+                <ul id="inlist">
+                        {% for k, v in recipe['nutritional info'].items() %}
+                            <li>{{ v }} {{ k }}</li>
+                        {% endfor %}
+                    </ul>
+            </div>
+        </div>
+    </div>
+
+    <div style="padding-top: 3em">
+        <h2><strong>Tags</strong></h2>
+        <ul>
+            {% for tag in recipe.tags %}
+                <li><a href="{{ url_for('routes.tags', tag=tag) }}">{{ tag }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div style="padding-top: 3em">
+        Credit: <a href="{{ recipe.link }}">AllRecipes</a>
+    </div>
+
+<script src="{{ url_for('static', filename='serving-size.js') }}"></script>
+<script src="{{ url_for('static', filename='fraction.min.js') }}"></script>
+{% endblock %}

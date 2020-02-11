@@ -1,0 +1,1403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>pantry_raid.models.usercollection API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pantry_raid.models.usercollection</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from flask import flash
+from pantry_raid.models.mongocollection import MongoCollection
+from pantry_raid.models.status import Status
+
+
+class UserCollection(MongoCollection):
+    &#34;&#34;&#34;Class to represent the persistent database of users, as opposed to the volatile User class used by Flask-Login.&#34;&#34;&#34;
+
+    def find_by_username(self, username):
+        &#34;&#34;&#34;Gets the user document from the collection based on the primary key (username).
+
+        Parameters
+        ----------
+        username : string
+            Username to get
+
+        Returns
+        -------
+        pymongo.Document or None
+            Document associated with the user if it exists
+        &#34;&#34;&#34;
+        return self.collection.find_one({ &#34;_id&#34;: username })
+
+    def username_exists(self, username):
+        &#34;&#34;&#34;Helper function to check if a username is taken.
+
+        Parameters
+        ----------
+        username : string
+            Username to check
+
+        Returns
+        -------
+        boolean
+            Whether the username is taken
+        &#34;&#34;&#34;
+        return self.find_by_username(username) is not None
+
+    def add_new_user(self, user):
+        &#34;&#34;&#34;Insert a newly created user into the collection. Before this function is called, `username_exists` was called to verify that the primary key is not already in use.
+
+        Parameters
+        ----------
+        user : pantry_raid.models.user.User
+            Flask-Login user object containing username, hashed password, and e-mail address
+
+        Returns
+        -------
+        pymongo.results.InsertOneResult
+            Result of inserting the document, including the `_id` of the inserted object, which should be the username since it is specified in the document to be inserted.
+        &#34;&#34;&#34;
+        user_doc = {
+            &#34;_id&#34;: user.username,
+            &#34;password&#34;: user.password,
+            &#34;email&#34;: user.email,
+            &#34;bad_logins&#34;: 0,
+            &#34;last_bad_login&#34;: 0,
+            &#34;pantry&#34;: [],
+            &#34;favorites&#34;: [],
+            &#34;substitutions&#34;: DEFAULT_SUBSTITUTIONS
+        }
+        return self.collection.insert_one(user_doc)
+
+    def update_user_field(self, uid, operation, field, value):
+        &#34;&#34;&#34;Updates a field inside of a user document.
+
+        Parameters
+        ----------
+        uid : string
+            Username (`_id`, primary key) corresponding to the document to update
+
+        operation : string
+            Mongo operation to perform. See https://docs.mongodb.com/manual/reference/operator/update/ for a full list of available operators. **Do not prefix with a `$`**, as that is done by this function.
+
+        field : string
+            The field to update
+
+        value : string
+            The operand used by the operation
+
+
+        Returns
+        -------
+        pymongo.results.UpdateResult
+            Results object containing information regarding the result of the operation
+        &#34;&#34;&#34;
+        return self.collection.update_one(
+            { &#34;_id&#34;: uid },
+            {
+                f&#34;${operation}&#34;: {
+                    field: value
+                }
+            }
+        )
+
+    def increment_bad_logins(self, user, time):
+        &#34;&#34;&#34;On a failed login, increment the bad login counter and save the time of the last bad login ot prevent bruteforcing of accounts.
+
+        Parameters
+        ----------
+        user : string
+            Username (`_id`) of the account
+
+        time : int
+            Unix epoch timestamp of the UTC time of the login attempt
+        &#34;&#34;&#34;
+        self.update_user_field(user, &#34;inc&#34;, &#34;bad_logins&#34;, 1)
+        self.update_user_field(user, &#34;set&#34;, &#34;last_bad_login&#34;, time)
+
+    def reset_bad_logins(self, user):
+        &#34;&#34;&#34;Resets the bad login data. Called after a successful login.
+
+        Parameters
+        ----------
+        user : string
+        &#34;&#34;&#34;
+        self.update_user_field(user, &#34;set&#34;, &#34;bad_logins&#34;, 0)
+        self.update_user_field(user, &#34;set&#34;, &#34;last_bad_login&#34;, 0)
+
+    def pantry_insert_ingredient(self, new_ingredient, uid):
+        &#34;&#34;&#34;Insert an ingredient into a specific user&#39;s pantry.
+
+        Parameters
+        ----------
+        new_ingredient : string
+            Ingredient to add. This has already been verified as a valid ingredient (exists in the ingredient database) that does not already exist in the user&#39;s pantry.
+
+        uid : string
+            Username whose pantry will be updated
+
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+            Status message for the result
+        &#34;&#34;&#34;
+        try:
+            self.update_user_field(uid, &#34;push&#34;, &#34;pantry&#34;, new_ingredient)
+            return Status(&#34;success&#34;, f&#34;Added {new_ingredient} to your pantry.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when adding {new_ingredient} to your pantry. Please try again later.&#34;)
+
+    def pantry_remove_ingredient(self, ingredient_to_remove, uid):
+        &#34;&#34;&#34;Removes an ingredient from a specific user&#39;s pantry.
+
+        Parameters
+        ----------
+        new_ingredient : string
+            Ingredient to add. This has already been verified as a valid ingredient (exists in the ingredient database) that does not already exist in the user&#39;s pantry.
+
+        uid : string
+            Username whose pantry will be updated
+
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+            Status message for the result
+        &#34;&#34;&#34;
+        try:
+            self.update_user_field(uid, &#34;pull&#34;, &#34;pantry&#34;, ingredient_to_remove)
+            return Status(&#34;info&#34;, f&#34;Removed {ingredient_to_remove} from your pantry.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when removing {ingredient_to_remove} from your pantry. Please try again later.&#34;)
+
+    def favorites_insert_recipe(self, recipe, uid):
+        &#34;&#34;&#34;Adds a favorite recipe to a specific user&#39;s account/
+
+        Parameters
+        ----------
+        recipe : `fill this in`
+            Recipe to add
+
+        uid : string
+            User account
+        &#34;&#34;&#34;
+
+        try:
+            self.update_user_field(uid, &#34;push&#34;, &#34;favorites&#34;, recipe)
+            return Status(&#34;info&#34;, f&#34;Added {recipe} to your favorites.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when adding {recipe} to your favorites. Please try again later.&#34;)
+
+    def favorites_remove_recipe(self, recipe, uid):
+        &#34;&#34;&#34;Adds a favorite recipe to a specific user&#39;s account/
+
+        Parameters
+        ----------
+        recipe : `fill this in`
+            Recipe to add
+
+        uid : string
+            User account
+        &#34;&#34;&#34;
+        try:
+            self.update_user_field(uid, &#34;pull&#34;, &#34;favorites&#34;, recipe)
+            return Status(&#34;info&#34;, f&#34;Removed {recipe} from your favorites.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when removing {recipe} from your favorites. Please try again later.&#34;)
+
+    def substitute_insert(self, substitution, uid):
+        &#34;&#34;&#34;Inserts a new substitution for the user.
+
+        Parameters
+        ----------
+        uid : string
+
+        substitution : dict
+
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+        &#34;&#34;&#34;
+        try:
+            target = f&#34;{substitution.get(&#39;quantity&#39;)} {substitution.get(&#39;name&#39;)}&#34;
+            self.update_user_field(uid, &#34;push&#34;, &#34;substitutes&#34;, substitution)
+            return Status(&#34;success&#34;, f&#34;Added substitution for {target} to your account.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when adding this substitition to your account. Please try again later.&#34;)
+
+    def substitute_remove(self, sub_index, uid):
+        &#34;&#34;&#34;Remove a substitute by array index. Warning: !!fun!! things can happen if the user is trying to do other things with substitutions at the same time, including displaying them.
+
+        Parameters
+        ----------
+        uid : string
+
+        sub_index : string
+            Array index to remove
+
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+        &#34;&#34;&#34;
+        try:
+            removal_value = { &#34;to_be_removed&#34;: { &#34;ingredient&#34;: None, &#34;quantity&#34;: None } }
+            self.update_user_field(uid, &#34;set&#34;, f&#34;substitutes.{sub_index}&#34;, removal_value)
+            self.update_user_field(uid, &#34;pull&#34;, &#34;substitutes&#34;, removal_value)
+            return Status(&#34;info&#34;, f&#34;Removed substitution from your account.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when removing this substitition to your account. Please try again later.&#34;)
+
+    def get_pantry_with_substitutions(self, uid):
+        &#34;&#34;&#34;Gets a modified version of the pantry based on presence of substitutions and their ingredients. If all items for a substitution exist in the pantry, then that ingredient is added to the pantry list, so that recipes using it may turn up in results.
+
+        Parameters
+        ----------
+        uid : string
+
+
+        Returns
+        -------
+        list
+            Modified pantry
+        &#34;&#34;&#34;
+        try:
+            user = self.find_by_username(uid)
+            subs_dict = user.get(&#39;substitutes&#39;)
+            pantry = user.get(&#39;pantry&#39;)
+            pantry_set = set(pantry)
+            for sub in subs_dict:
+                sub_ingredients = set([ v
+                    for ing in sub.get(&#39;items&#39;)
+                    for k, v in ing.items()
+                    if k == &#39;ingredient&#39;
+                ])
+
+                # If all sub ingredients are in the pantry, then &#34;add&#34; the target ingredient to the pantry
+                if sub_ingredients.issubset(pantry_set):
+                    pantry.append(sub.get(&#39;name&#39;))
+            return pantry
+        except Exception:  # pragma: no cover
+            flash(&#34;danger&#34;, &#34;The service encountered an error when trying to substitute ingredients. No substitutes have been used.&#34;)
+            return []
+
+
+# Some basic substitution to add to all users on account creation
+DEFAULT_SUBSTITUTIONS = [
+    {
+        &#34;name&#34;: &#34;allspice&#34;,
+        &#34;quantity&#34;: &#34;1 teaspoon&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1/2 teaspoon&#34;,
+                &#34;ingredient&#34;: &#34;cinnamon&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1/4 teaspoon&#34;,
+                &#34;ingredient&#34;: &#34;ginger&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1/4 teaspoon&#34;,
+                &#34;ingredient&#34;: &#34;cloves&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;baking powder&#34;,
+        &#34;quantity&#34;: &#34;1 teaspoon&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1/4 teaspoon&#34;,
+                &#34;ingredient&#34;: &#34;baking soda&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1/2 teaspoon&#34;,
+                &#34;ingredient&#34;: &#34;cream of tartar&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;baking powder&#34;,
+        &#34;quantity&#34;: &#34;1 teaspoon&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1/4 teaspoon&#34;,
+                &#34;ingredient&#34;: &#34;baking soda&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1/2 cup&#34;,
+                &#34;ingredient&#34;: &#34;buttermilk&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;beer&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1 cup&#34;,
+                &#34;ingredient&#34;: &#34;chicken broth&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;butter&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1 cup&#34;,
+                &#34;ingredient&#34;: &#34;margarine&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;butter&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1 cup&#34;,
+                &#34;ingredient&#34;: &#34;shortening&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;butter&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;7/8 cup&#34;,
+                &#34;ingredient&#34;: &#34;vegetable oil&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;buttermilk&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1 tablespoon&#34;,
+                &#34;ingredient&#34;: &#34;lemon juice&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;15 tablespoon&#34;,
+                &#34;ingredient&#34;: &#34;milk&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;bittersweet chocolate&#34;,
+        &#34;quantity&#34;: &#34;1 ounce&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;3 tablespoons&#34;,
+                &#34;ingredient&#34;: &#34;unsweetened cocoa powder&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1 tablespoon&#34;,
+                &#34;ingredient&#34;: &#34;shortening&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;bittersweet chocolate&#34;,
+        &#34;quantity&#34;: &#34;1 ounce&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;3 tablespoons&#34;,
+                &#34;ingredient&#34;: &#34;unsweetened cocoa powder&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1 tablespoon&#34;,
+                &#34;ingredient&#34;: &#34;vegetable oil&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;light corn syrup&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1 1/4 cup&#34;,
+                &#34;ingredient&#34;: &#34;white sugar&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1/3 cup&#34;,
+                &#34;ingredient&#34;: &#34;water&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;light corn syrup&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1 cup&#34;,
+                &#34;ingredient&#34;: &#34;honey&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;heavy cream&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1 cup&#34;,
+                &#34;ingredient&#34;: &#34;evaporated milk&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;heavy cream&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;3/4 cup&#34;,
+                &#34;ingredient&#34;: &#34;milk&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1/3 cup&#34;,
+                &#34;ingredient&#34;: &#34;butter&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;egg&#34;,
+        &#34;quantity&#34;: &#34;1&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1/2 mashed&#34;,
+                &#34;ingredient&#34;: &#34;banana&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1/2 teaspoon&#34;,
+                &#34;ingredient&#34;: &#34;baking powder&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;ketchup&#34;,
+        &#34;quantity&#34;: &#34;1 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1 cup&#34;,
+                &#34;ingredient&#34;: &#34;tomato sauce&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1 teaspoon&#34;,
+                &#34;ingredient&#34;: &#34;white vinegar&#34;
+                },
+            {
+                &#34;quantity&#34;: &#34;1 tablespoon&#34;,
+                &#34;ingredient&#34;: &#34;white sugar&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;saffron&#34;,
+        &#34;quantity&#34;: &#34;1/4 teaspoon&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1/4 teaspoon&#34;,
+                &#34;ingredient&#34;: &#34;turmeric&#34;
+            }
+        ]
+    },
+    {
+        &#34;name&#34;: &#34;soy sauce&#34;,
+        &#34;quantity&#34;: &#34;1/2 cup&#34;,
+        &#34;items&#34;: [
+            {
+                &#34;quantity&#34;: &#34;1/4 cup&#34;,
+                &#34;ingredient&#34;: &#34;Worcestershire sauce&#34;
+            },
+            {
+                &#34;quantity&#34;: &#34;1 tablespoon&#34;,
+                &#34;ingredient&#34;: &#34;water&#34;
+            }
+        ]
+    }
+]</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pantry_raid.models.usercollection.UserCollection"><code class="flex name class">
+<span>class <span class="ident">UserCollection</span></span>
+<span>(</span><span>collection)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class to represent the persistent database of users, as opposed to the volatile User class used by Flask-Login.</p>
+<p>Constructor for abstract wrapper class around a <code>pymongo.Collection</code>.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>collection</code></strong> :&ensp;<code>pymongo.Collection</code></dt>
+<dd>MongoDB collection</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class UserCollection(MongoCollection):
+    &#34;&#34;&#34;Class to represent the persistent database of users, as opposed to the volatile User class used by Flask-Login.&#34;&#34;&#34;
+
+    def find_by_username(self, username):
+        &#34;&#34;&#34;Gets the user document from the collection based on the primary key (username).
+
+        Parameters
+        ----------
+        username : string
+            Username to get
+
+        Returns
+        -------
+        pymongo.Document or None
+            Document associated with the user if it exists
+        &#34;&#34;&#34;
+        return self.collection.find_one({ &#34;_id&#34;: username })
+
+    def username_exists(self, username):
+        &#34;&#34;&#34;Helper function to check if a username is taken.
+
+        Parameters
+        ----------
+        username : string
+            Username to check
+
+        Returns
+        -------
+        boolean
+            Whether the username is taken
+        &#34;&#34;&#34;
+        return self.find_by_username(username) is not None
+
+    def add_new_user(self, user):
+        &#34;&#34;&#34;Insert a newly created user into the collection. Before this function is called, `username_exists` was called to verify that the primary key is not already in use.
+
+        Parameters
+        ----------
+        user : pantry_raid.models.user.User
+            Flask-Login user object containing username, hashed password, and e-mail address
+
+        Returns
+        -------
+        pymongo.results.InsertOneResult
+            Result of inserting the document, including the `_id` of the inserted object, which should be the username since it is specified in the document to be inserted.
+        &#34;&#34;&#34;
+        user_doc = {
+            &#34;_id&#34;: user.username,
+            &#34;password&#34;: user.password,
+            &#34;email&#34;: user.email,
+            &#34;bad_logins&#34;: 0,
+            &#34;last_bad_login&#34;: 0,
+            &#34;pantry&#34;: [],
+            &#34;favorites&#34;: [],
+            &#34;substitutions&#34;: DEFAULT_SUBSTITUTIONS
+        }
+        return self.collection.insert_one(user_doc)
+
+    def update_user_field(self, uid, operation, field, value):
+        &#34;&#34;&#34;Updates a field inside of a user document.
+
+        Parameters
+        ----------
+        uid : string
+            Username (`_id`, primary key) corresponding to the document to update
+
+        operation : string
+            Mongo operation to perform. See https://docs.mongodb.com/manual/reference/operator/update/ for a full list of available operators. **Do not prefix with a `$`**, as that is done by this function.
+
+        field : string
+            The field to update
+
+        value : string
+            The operand used by the operation
+
+
+        Returns
+        -------
+        pymongo.results.UpdateResult
+            Results object containing information regarding the result of the operation
+        &#34;&#34;&#34;
+        return self.collection.update_one(
+            { &#34;_id&#34;: uid },
+            {
+                f&#34;${operation}&#34;: {
+                    field: value
+                }
+            }
+        )
+
+    def increment_bad_logins(self, user, time):
+        &#34;&#34;&#34;On a failed login, increment the bad login counter and save the time of the last bad login ot prevent bruteforcing of accounts.
+
+        Parameters
+        ----------
+        user : string
+            Username (`_id`) of the account
+
+        time : int
+            Unix epoch timestamp of the UTC time of the login attempt
+        &#34;&#34;&#34;
+        self.update_user_field(user, &#34;inc&#34;, &#34;bad_logins&#34;, 1)
+        self.update_user_field(user, &#34;set&#34;, &#34;last_bad_login&#34;, time)
+
+    def reset_bad_logins(self, user):
+        &#34;&#34;&#34;Resets the bad login data. Called after a successful login.
+
+        Parameters
+        ----------
+        user : string
+        &#34;&#34;&#34;
+        self.update_user_field(user, &#34;set&#34;, &#34;bad_logins&#34;, 0)
+        self.update_user_field(user, &#34;set&#34;, &#34;last_bad_login&#34;, 0)
+
+    def pantry_insert_ingredient(self, new_ingredient, uid):
+        &#34;&#34;&#34;Insert an ingredient into a specific user&#39;s pantry.
+
+        Parameters
+        ----------
+        new_ingredient : string
+            Ingredient to add. This has already been verified as a valid ingredient (exists in the ingredient database) that does not already exist in the user&#39;s pantry.
+
+        uid : string
+            Username whose pantry will be updated
+
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+            Status message for the result
+        &#34;&#34;&#34;
+        try:
+            self.update_user_field(uid, &#34;push&#34;, &#34;pantry&#34;, new_ingredient)
+            return Status(&#34;success&#34;, f&#34;Added {new_ingredient} to your pantry.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when adding {new_ingredient} to your pantry. Please try again later.&#34;)
+
+    def pantry_remove_ingredient(self, ingredient_to_remove, uid):
+        &#34;&#34;&#34;Removes an ingredient from a specific user&#39;s pantry.
+
+        Parameters
+        ----------
+        new_ingredient : string
+            Ingredient to add. This has already been verified as a valid ingredient (exists in the ingredient database) that does not already exist in the user&#39;s pantry.
+
+        uid : string
+            Username whose pantry will be updated
+
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+            Status message for the result
+        &#34;&#34;&#34;
+        try:
+            self.update_user_field(uid, &#34;pull&#34;, &#34;pantry&#34;, ingredient_to_remove)
+            return Status(&#34;info&#34;, f&#34;Removed {ingredient_to_remove} from your pantry.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when removing {ingredient_to_remove} from your pantry. Please try again later.&#34;)
+
+    def favorites_insert_recipe(self, recipe, uid):
+        &#34;&#34;&#34;Adds a favorite recipe to a specific user&#39;s account/
+
+        Parameters
+        ----------
+        recipe : `fill this in`
+            Recipe to add
+
+        uid : string
+            User account
+        &#34;&#34;&#34;
+
+        try:
+            self.update_user_field(uid, &#34;push&#34;, &#34;favorites&#34;, recipe)
+            return Status(&#34;info&#34;, f&#34;Added {recipe} to your favorites.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when adding {recipe} to your favorites. Please try again later.&#34;)
+
+    def favorites_remove_recipe(self, recipe, uid):
+        &#34;&#34;&#34;Adds a favorite recipe to a specific user&#39;s account/
+
+        Parameters
+        ----------
+        recipe : `fill this in`
+            Recipe to add
+
+        uid : string
+            User account
+        &#34;&#34;&#34;
+        try:
+            self.update_user_field(uid, &#34;pull&#34;, &#34;favorites&#34;, recipe)
+            return Status(&#34;info&#34;, f&#34;Removed {recipe} from your favorites.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when removing {recipe} from your favorites. Please try again later.&#34;)
+
+    def substitute_insert(self, substitution, uid):
+        &#34;&#34;&#34;Inserts a new substitution for the user.
+
+        Parameters
+        ----------
+        uid : string
+
+        substitution : dict
+
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+        &#34;&#34;&#34;
+        try:
+            target = f&#34;{substitution.get(&#39;quantity&#39;)} {substitution.get(&#39;name&#39;)}&#34;
+            self.update_user_field(uid, &#34;push&#34;, &#34;substitutes&#34;, substitution)
+            return Status(&#34;success&#34;, f&#34;Added substitution for {target} to your account.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when adding this substitition to your account. Please try again later.&#34;)
+
+    def substitute_remove(self, sub_index, uid):
+        &#34;&#34;&#34;Remove a substitute by array index. Warning: !!fun!! things can happen if the user is trying to do other things with substitutions at the same time, including displaying them.
+
+        Parameters
+        ----------
+        uid : string
+
+        sub_index : string
+            Array index to remove
+
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+        &#34;&#34;&#34;
+        try:
+            removal_value = { &#34;to_be_removed&#34;: { &#34;ingredient&#34;: None, &#34;quantity&#34;: None } }
+            self.update_user_field(uid, &#34;set&#34;, f&#34;substitutes.{sub_index}&#34;, removal_value)
+            self.update_user_field(uid, &#34;pull&#34;, &#34;substitutes&#34;, removal_value)
+            return Status(&#34;info&#34;, f&#34;Removed substitution from your account.&#34;)
+        except Exception:  # pragma: no cover
+            return Status(&#34;danger&#34;, f&#34;The service encountered a problem when removing this substitition to your account. Please try again later.&#34;)
+
+    def get_pantry_with_substitutions(self, uid):
+        &#34;&#34;&#34;Gets a modified version of the pantry based on presence of substitutions and their ingredients. If all items for a substitution exist in the pantry, then that ingredient is added to the pantry list, so that recipes using it may turn up in results.
+
+        Parameters
+        ----------
+        uid : string
+
+
+        Returns
+        -------
+        list
+            Modified pantry
+        &#34;&#34;&#34;
+        try:
+            user = self.find_by_username(uid)
+            subs_dict = user.get(&#39;substitutes&#39;)
+            pantry = user.get(&#39;pantry&#39;)
+            pantry_set = set(pantry)
+            for sub in subs_dict:
+                sub_ingredients = set([ v
+                    for ing in sub.get(&#39;items&#39;)
+                    for k, v in ing.items()
+                    if k == &#39;ingredient&#39;
+                ])
+
+                # If all sub ingredients are in the pantry, then &#34;add&#34; the target ingredient to the pantry
+                if sub_ingredients.issubset(pantry_set):
+                    pantry.append(sub.get(&#39;name&#39;))
+            return pantry
+        except Exception:  # pragma: no cover
+            flash(&#34;danger&#34;, &#34;The service encountered an error when trying to substitute ingredients. No substitutes have been used.&#34;)
+            return []</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="pantry_raid.models.mongocollection.MongoCollection" href="mongocollection.html#pantry_raid.models.mongocollection.MongoCollection">MongoCollection</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="pantry_raid.models.usercollection.UserCollection.add_new_user"><code class="name flex">
+<span>def <span class="ident">add_new_user</span></span>(<span>self, user)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Insert a newly created user into the collection. Before this function is called, <code>username_exists</code> was called to verify that the primary key is not already in use.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>user</code></strong> :&ensp;<a title="pantry_raid.models.user.User" href="user.html#pantry_raid.models.user.User"><code>User</code></a></dt>
+<dd>Flask-Login user object containing username, hashed password, and e-mail address</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pymongo.results.InsertOneResult</code></dt>
+<dd>Result of inserting the document, including the <code>_id</code> of the inserted object, which should be the username since it is specified in the document to be inserted.</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_new_user(self, user):
+    &#34;&#34;&#34;Insert a newly created user into the collection. Before this function is called, `username_exists` was called to verify that the primary key is not already in use.
+
+    Parameters
+    ----------
+    user : pantry_raid.models.user.User
+        Flask-Login user object containing username, hashed password, and e-mail address
+
+    Returns
+    -------
+    pymongo.results.InsertOneResult
+        Result of inserting the document, including the `_id` of the inserted object, which should be the username since it is specified in the document to be inserted.
+    &#34;&#34;&#34;
+    user_doc = {
+        &#34;_id&#34;: user.username,
+        &#34;password&#34;: user.password,
+        &#34;email&#34;: user.email,
+        &#34;bad_logins&#34;: 0,
+        &#34;last_bad_login&#34;: 0,
+        &#34;pantry&#34;: [],
+        &#34;favorites&#34;: [],
+        &#34;substitutions&#34;: DEFAULT_SUBSTITUTIONS
+    }
+    return self.collection.insert_one(user_doc)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.favorites_insert_recipe"><code class="name flex">
+<span>def <span class="ident">favorites_insert_recipe</span></span>(<span>self, recipe, uid)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds a favorite recipe to a specific user's account/</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>recipe</code></strong> :&ensp;<code>fill` `this` `in</code></dt>
+<dd>Recipe to add</dd>
+<dt><strong><code>uid</code></strong> :&ensp;<code>string</code></dt>
+<dd>User account</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def favorites_insert_recipe(self, recipe, uid):
+    &#34;&#34;&#34;Adds a favorite recipe to a specific user&#39;s account/
+
+    Parameters
+    ----------
+    recipe : `fill this in`
+        Recipe to add
+
+    uid : string
+        User account
+    &#34;&#34;&#34;
+
+    try:
+        self.update_user_field(uid, &#34;push&#34;, &#34;favorites&#34;, recipe)
+        return Status(&#34;info&#34;, f&#34;Added {recipe} to your favorites.&#34;)
+    except Exception:  # pragma: no cover
+        return Status(&#34;danger&#34;, f&#34;The service encountered a problem when adding {recipe} to your favorites. Please try again later.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.favorites_remove_recipe"><code class="name flex">
+<span>def <span class="ident">favorites_remove_recipe</span></span>(<span>self, recipe, uid)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Adds a favorite recipe to a specific user's account/</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>recipe</code></strong> :&ensp;<code>fill` `this` `in</code></dt>
+<dd>Recipe to add</dd>
+<dt><strong><code>uid</code></strong> :&ensp;<code>string</code></dt>
+<dd>User account</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def favorites_remove_recipe(self, recipe, uid):
+    &#34;&#34;&#34;Adds a favorite recipe to a specific user&#39;s account/
+
+    Parameters
+    ----------
+    recipe : `fill this in`
+        Recipe to add
+
+    uid : string
+        User account
+    &#34;&#34;&#34;
+    try:
+        self.update_user_field(uid, &#34;pull&#34;, &#34;favorites&#34;, recipe)
+        return Status(&#34;info&#34;, f&#34;Removed {recipe} from your favorites.&#34;)
+    except Exception:  # pragma: no cover
+        return Status(&#34;danger&#34;, f&#34;The service encountered a problem when removing {recipe} from your favorites. Please try again later.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.find_by_username"><code class="name flex">
+<span>def <span class="ident">find_by_username</span></span>(<span>self, username)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets the user document from the collection based on the primary key (username).</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>username</code></strong> :&ensp;<code>string</code></dt>
+<dd>Username to get</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pymongo.Document</code> or <code>None</code></dt>
+<dd>Document associated with the user if it exists</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def find_by_username(self, username):
+    &#34;&#34;&#34;Gets the user document from the collection based on the primary key (username).
+
+    Parameters
+    ----------
+    username : string
+        Username to get
+
+    Returns
+    -------
+    pymongo.Document or None
+        Document associated with the user if it exists
+    &#34;&#34;&#34;
+    return self.collection.find_one({ &#34;_id&#34;: username })</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.get_pantry_with_substitutions"><code class="name flex">
+<span>def <span class="ident">get_pantry_with_substitutions</span></span>(<span>self, uid)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets a modified version of the pantry based on presence of substitutions and their ingredients. If all items for a substitution exist in the pantry, then that ingredient is added to the pantry list, so that recipes using it may turn up in results.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>uid</code></strong> :&ensp;<code>string</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>Modified pantry</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_pantry_with_substitutions(self, uid):
+    &#34;&#34;&#34;Gets a modified version of the pantry based on presence of substitutions and their ingredients. If all items for a substitution exist in the pantry, then that ingredient is added to the pantry list, so that recipes using it may turn up in results.
+
+    Parameters
+    ----------
+    uid : string
+
+
+    Returns
+    -------
+    list
+        Modified pantry
+    &#34;&#34;&#34;
+    try:
+        user = self.find_by_username(uid)
+        subs_dict = user.get(&#39;substitutes&#39;)
+        pantry = user.get(&#39;pantry&#39;)
+        pantry_set = set(pantry)
+        for sub in subs_dict:
+            sub_ingredients = set([ v
+                for ing in sub.get(&#39;items&#39;)
+                for k, v in ing.items()
+                if k == &#39;ingredient&#39;
+            ])
+
+            # If all sub ingredients are in the pantry, then &#34;add&#34; the target ingredient to the pantry
+            if sub_ingredients.issubset(pantry_set):
+                pantry.append(sub.get(&#39;name&#39;))
+        return pantry
+    except Exception:  # pragma: no cover
+        flash(&#34;danger&#34;, &#34;The service encountered an error when trying to substitute ingredients. No substitutes have been used.&#34;)
+        return []</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.increment_bad_logins"><code class="name flex">
+<span>def <span class="ident">increment_bad_logins</span></span>(<span>self, user, time)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>On a failed login, increment the bad login counter and save the time of the last bad login ot prevent bruteforcing of accounts.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>user</code></strong> :&ensp;<code>string</code></dt>
+<dd>Username (<code>_id</code>) of the account</dd>
+<dt><strong><code>time</code></strong> :&ensp;<code>int</code></dt>
+<dd>Unix epoch timestamp of the UTC time of the login attempt</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def increment_bad_logins(self, user, time):
+    &#34;&#34;&#34;On a failed login, increment the bad login counter and save the time of the last bad login ot prevent bruteforcing of accounts.
+
+    Parameters
+    ----------
+    user : string
+        Username (`_id`) of the account
+
+    time : int
+        Unix epoch timestamp of the UTC time of the login attempt
+    &#34;&#34;&#34;
+    self.update_user_field(user, &#34;inc&#34;, &#34;bad_logins&#34;, 1)
+    self.update_user_field(user, &#34;set&#34;, &#34;last_bad_login&#34;, time)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.pantry_insert_ingredient"><code class="name flex">
+<span>def <span class="ident">pantry_insert_ingredient</span></span>(<span>self, new_ingredient, uid)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Insert an ingredient into a specific user's pantry.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>new_ingredient</code></strong> :&ensp;<code>string</code></dt>
+<dd>Ingredient to add. This has already been verified as a valid ingredient (exists in the ingredient database) that does not already exist in the user's pantry.</dd>
+<dt><strong><code>uid</code></strong> :&ensp;<code>string</code></dt>
+<dd>Username whose pantry will be updated</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><a title="pantry_raid.models.status.Status" href="status.html#pantry_raid.models.status.Status"><code>Status</code></a></dt>
+<dd>Status message for the result</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def pantry_insert_ingredient(self, new_ingredient, uid):
+    &#34;&#34;&#34;Insert an ingredient into a specific user&#39;s pantry.
+
+    Parameters
+    ----------
+    new_ingredient : string
+        Ingredient to add. This has already been verified as a valid ingredient (exists in the ingredient database) that does not already exist in the user&#39;s pantry.
+
+    uid : string
+        Username whose pantry will be updated
+
+
+    Returns
+    -------
+    pantry_raid.models.status.Status
+        Status message for the result
+    &#34;&#34;&#34;
+    try:
+        self.update_user_field(uid, &#34;push&#34;, &#34;pantry&#34;, new_ingredient)
+        return Status(&#34;success&#34;, f&#34;Added {new_ingredient} to your pantry.&#34;)
+    except Exception:  # pragma: no cover
+        return Status(&#34;danger&#34;, f&#34;The service encountered a problem when adding {new_ingredient} to your pantry. Please try again later.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.pantry_remove_ingredient"><code class="name flex">
+<span>def <span class="ident">pantry_remove_ingredient</span></span>(<span>self, ingredient_to_remove, uid)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Removes an ingredient from a specific user's pantry.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>new_ingredient</code></strong> :&ensp;<code>string</code></dt>
+<dd>Ingredient to add. This has already been verified as a valid ingredient (exists in the ingredient database) that does not already exist in the user's pantry.</dd>
+<dt><strong><code>uid</code></strong> :&ensp;<code>string</code></dt>
+<dd>Username whose pantry will be updated</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><a title="pantry_raid.models.status.Status" href="status.html#pantry_raid.models.status.Status"><code>Status</code></a></dt>
+<dd>Status message for the result</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def pantry_remove_ingredient(self, ingredient_to_remove, uid):
+    &#34;&#34;&#34;Removes an ingredient from a specific user&#39;s pantry.
+
+    Parameters
+    ----------
+    new_ingredient : string
+        Ingredient to add. This has already been verified as a valid ingredient (exists in the ingredient database) that does not already exist in the user&#39;s pantry.
+
+    uid : string
+        Username whose pantry will be updated
+
+
+    Returns
+    -------
+    pantry_raid.models.status.Status
+        Status message for the result
+    &#34;&#34;&#34;
+    try:
+        self.update_user_field(uid, &#34;pull&#34;, &#34;pantry&#34;, ingredient_to_remove)
+        return Status(&#34;info&#34;, f&#34;Removed {ingredient_to_remove} from your pantry.&#34;)
+    except Exception:  # pragma: no cover
+        return Status(&#34;danger&#34;, f&#34;The service encountered a problem when removing {ingredient_to_remove} from your pantry. Please try again later.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.reset_bad_logins"><code class="name flex">
+<span>def <span class="ident">reset_bad_logins</span></span>(<span>self, user)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Resets the bad login data. Called after a successful login.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>user</code></strong> :&ensp;<code>string</code></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def reset_bad_logins(self, user):
+    &#34;&#34;&#34;Resets the bad login data. Called after a successful login.
+
+    Parameters
+    ----------
+    user : string
+    &#34;&#34;&#34;
+    self.update_user_field(user, &#34;set&#34;, &#34;bad_logins&#34;, 0)
+    self.update_user_field(user, &#34;set&#34;, &#34;last_bad_login&#34;, 0)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.substitute_insert"><code class="name flex">
+<span>def <span class="ident">substitute_insert</span></span>(<span>self, substitution, uid)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Inserts a new substitution for the user.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>uid</code></strong> :&ensp;<code>string</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>substitution</code></strong> :&ensp;<code>dict</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><a title="pantry_raid.models.status.Status" href="status.html#pantry_raid.models.status.Status"><code>Status</code></a></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def substitute_insert(self, substitution, uid):
+    &#34;&#34;&#34;Inserts a new substitution for the user.
+
+    Parameters
+    ----------
+    uid : string
+
+    substitution : dict
+
+
+    Returns
+    -------
+    pantry_raid.models.status.Status
+    &#34;&#34;&#34;
+    try:
+        target = f&#34;{substitution.get(&#39;quantity&#39;)} {substitution.get(&#39;name&#39;)}&#34;
+        self.update_user_field(uid, &#34;push&#34;, &#34;substitutes&#34;, substitution)
+        return Status(&#34;success&#34;, f&#34;Added substitution for {target} to your account.&#34;)
+    except Exception:  # pragma: no cover
+        return Status(&#34;danger&#34;, f&#34;The service encountered a problem when adding this substitition to your account. Please try again later.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.substitute_remove"><code class="name flex">
+<span>def <span class="ident">substitute_remove</span></span>(<span>self, sub_index, uid)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Remove a substitute by array index. Warning: !!fun!! things can happen if the user is trying to do other things with substitutions at the same time, including displaying them.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>uid</code></strong> :&ensp;<code>string</code></dt>
+<dd>&nbsp;</dd>
+<dt><strong><code>sub_index</code></strong> :&ensp;<code>string</code></dt>
+<dd>Array index to remove</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><a title="pantry_raid.models.status.Status" href="status.html#pantry_raid.models.status.Status"><code>Status</code></a></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def substitute_remove(self, sub_index, uid):
+    &#34;&#34;&#34;Remove a substitute by array index. Warning: !!fun!! things can happen if the user is trying to do other things with substitutions at the same time, including displaying them.
+
+    Parameters
+    ----------
+    uid : string
+
+    sub_index : string
+        Array index to remove
+
+
+    Returns
+    -------
+    pantry_raid.models.status.Status
+    &#34;&#34;&#34;
+    try:
+        removal_value = { &#34;to_be_removed&#34;: { &#34;ingredient&#34;: None, &#34;quantity&#34;: None } }
+        self.update_user_field(uid, &#34;set&#34;, f&#34;substitutes.{sub_index}&#34;, removal_value)
+        self.update_user_field(uid, &#34;pull&#34;, &#34;substitutes&#34;, removal_value)
+        return Status(&#34;info&#34;, f&#34;Removed substitution from your account.&#34;)
+    except Exception:  # pragma: no cover
+        return Status(&#34;danger&#34;, f&#34;The service encountered a problem when removing this substitition to your account. Please try again later.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.update_user_field"><code class="name flex">
+<span>def <span class="ident">update_user_field</span></span>(<span>self, uid, operation, field, value)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Updates a field inside of a user document.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>uid</code></strong> :&ensp;<code>string</code></dt>
+<dd>Username (<code>_id</code>, primary key) corresponding to the document to update</dd>
+<dt><strong><code>operation</code></strong> :&ensp;<code>string</code></dt>
+<dd>Mongo operation to perform. See <a href="https://docs.mongodb.com/manual/reference/operator/update/">https://docs.mongodb.com/manual/reference/operator/update/</a> for a full list of available operators. <strong>Do not prefix with a <code>$</code></strong>, as that is done by this function.</dd>
+<dt><strong><code>field</code></strong> :&ensp;<code>string</code></dt>
+<dd>The field to update</dd>
+<dt><strong><code>value</code></strong> :&ensp;<code>string</code></dt>
+<dd>The operand used by the operation</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pymongo.results.UpdateResult</code></dt>
+<dd>Results object containing information regarding the result of the operation</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def update_user_field(self, uid, operation, field, value):
+    &#34;&#34;&#34;Updates a field inside of a user document.
+
+    Parameters
+    ----------
+    uid : string
+        Username (`_id`, primary key) corresponding to the document to update
+
+    operation : string
+        Mongo operation to perform. See https://docs.mongodb.com/manual/reference/operator/update/ for a full list of available operators. **Do not prefix with a `$`**, as that is done by this function.
+
+    field : string
+        The field to update
+
+    value : string
+        The operand used by the operation
+
+
+    Returns
+    -------
+    pymongo.results.UpdateResult
+        Results object containing information regarding the result of the operation
+    &#34;&#34;&#34;
+    return self.collection.update_one(
+        { &#34;_id&#34;: uid },
+        {
+            f&#34;${operation}&#34;: {
+                field: value
+            }
+        }
+    )</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.usercollection.UserCollection.username_exists"><code class="name flex">
+<span>def <span class="ident">username_exists</span></span>(<span>self, username)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Helper function to check if a username is taken.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>username</code></strong> :&ensp;<code>string</code></dt>
+<dd>Username to check</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>boolean</code></dt>
+<dd>Whether the username is taken</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def username_exists(self, username):
+    &#34;&#34;&#34;Helper function to check if a username is taken.
+
+    Parameters
+    ----------
+    username : string
+        Username to check
+
+    Returns
+    -------
+    boolean
+        Whether the username is taken
+    &#34;&#34;&#34;
+    return self.find_by_username(username) is not None</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="pantry_raid.models.mongocollection.MongoCollection" href="mongocollection.html#pantry_raid.models.mongocollection.MongoCollection">MongoCollection</a></b></code>:
+<ul class="hlist">
+<li><code><a title="pantry_raid.models.mongocollection.MongoCollection.deduplicate_document_list" href="mongocollection.html#pantry_raid.models.mongocollection.MongoCollection.deduplicate_document_list">deduplicate_document_list</a></code></li>
+<li><code><a title="pantry_raid.models.mongocollection.MongoCollection.flatten_nested_dict_lists" href="mongocollection.html#pantry_raid.models.mongocollection.MongoCollection.flatten_nested_dict_lists">flatten_nested_dict_lists</a></code></li>
+<li><code><a title="pantry_raid.models.mongocollection.MongoCollection.get_as_list" href="mongocollection.html#pantry_raid.models.mongocollection.MongoCollection.get_as_list">get_as_list</a></code></li>
+<li><code><a title="pantry_raid.models.mongocollection.MongoCollection.get_subset" href="mongocollection.html#pantry_raid.models.mongocollection.MongoCollection.get_subset">get_subset</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pantry_raid.models" href="index.html">pantry_raid.models</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pantry_raid.models.usercollection.UserCollection" href="#pantry_raid.models.usercollection.UserCollection">UserCollection</a></code></h4>
+<ul class="">
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.add_new_user" href="#pantry_raid.models.usercollection.UserCollection.add_new_user">add_new_user</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.favorites_insert_recipe" href="#pantry_raid.models.usercollection.UserCollection.favorites_insert_recipe">favorites_insert_recipe</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.favorites_remove_recipe" href="#pantry_raid.models.usercollection.UserCollection.favorites_remove_recipe">favorites_remove_recipe</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.find_by_username" href="#pantry_raid.models.usercollection.UserCollection.find_by_username">find_by_username</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.get_pantry_with_substitutions" href="#pantry_raid.models.usercollection.UserCollection.get_pantry_with_substitutions">get_pantry_with_substitutions</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.increment_bad_logins" href="#pantry_raid.models.usercollection.UserCollection.increment_bad_logins">increment_bad_logins</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.pantry_insert_ingredient" href="#pantry_raid.models.usercollection.UserCollection.pantry_insert_ingredient">pantry_insert_ingredient</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.pantry_remove_ingredient" href="#pantry_raid.models.usercollection.UserCollection.pantry_remove_ingredient">pantry_remove_ingredient</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.reset_bad_logins" href="#pantry_raid.models.usercollection.UserCollection.reset_bad_logins">reset_bad_logins</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.substitute_insert" href="#pantry_raid.models.usercollection.UserCollection.substitute_insert">substitute_insert</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.substitute_remove" href="#pantry_raid.models.usercollection.UserCollection.substitute_remove">substitute_remove</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.update_user_field" href="#pantry_raid.models.usercollection.UserCollection.update_user_field">update_user_field</a></code></li>
+<li><code><a title="pantry_raid.models.usercollection.UserCollection.username_exists" href="#pantry_raid.models.usercollection.UserCollection.username_exists">username_exists</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %} - All Recipes {% endblock %}
+
+{% block content %}
+    <h1 class="title">All Recipes</h1>
+<div class="grid-container">
+    {% for result in recipes %}
+        {% include 'recipe_card.html' %}
+    {% endfor %}
+</div>
+{% endblock %}

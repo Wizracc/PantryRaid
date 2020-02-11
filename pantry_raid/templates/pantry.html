@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %} - My Pantry {% endblock %}
+
+{% block content %}
+    <h1 class="title">My Pantry</h1>
+    <div class="columns">
+        <div class="column">
+            <h2><strong>Add Food to Inventory</strong></h2>
+            {% if data.status %}
+                <div class="{{ data.status.css }}">{{ data.status.text }}</div>
+            {% endif %}
+            <form autocomplete="off" method="POST" name="add" action="{{ url_for('routes.pantry') }}">
+                <fieldset>
+                    <div class="autocomplete">
+                        {{ form.add_food }}<br>
+                    </div>
+                    <div style="padding-top: 1em">{{ form.submit }}</div>
+                </fieldset>
+            </form>
+        </div>
+        <div class="column">
+            <h2><strong>Pantry Contents</strong></h2>
+
+            <form method="POST" name="remove" action="{{ url_for('routes.pantry') }}">
+            <ul id="pantry" style="list-style-type: disc;">
+                {% for item in data.pantry %}
+                <li>{{ item }} <button type="submit" class="link-button" name="{{ item }}"><i class="fa fa-trash-alt"></i></button></li>
+                {% endfor %}
+            </ul>
+            </form>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='autocomplete.js') }}"></script>
+    <script>
+        autocomplete(document.getElementById("input"), {{ data.ingredients | tojson }});
+    </script>
+{% endblock %}

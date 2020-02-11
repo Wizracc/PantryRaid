@@ -1,0 +1,1182 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.6.2" />
+<title>pantry_raid.models.database API documentation</title>
+<meta name="description" content="" />
+<link href='https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css' rel='stylesheet'>
+<link href='https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/8.0.0/sanitize.min.css' rel='stylesheet'>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css" rel="stylesheet">
+<style>.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{font-weight:bold}#index h4 + ul{margin-bottom:.6em}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase;cursor:pointer}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}.admonition{padding:.1em .5em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>pantry_raid.models.database</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">from flask_login import current_user
+from flask import flash
+from pymongo import MongoClient
+from pantry_raid.models.favorites import Favorites
+from pantry_raid.models.ingredients import Ingredients
+from pantry_raid.models.pantry import Pantry
+from pantry_raid.models.recipes import Recipes
+from pantry_raid.models.status import Status
+from pantry_raid.models.usercollection import UserCollection
+
+
+class Database(object):
+    &#34;&#34;&#34;Class for all MongoDB-related operations. This class acts as a public interface to all MongoCollections.
+
+    Attributes
+    ----------
+    config : pantry_raid.config.Config
+        Configuration object used to instantiate the client.
+
+    mongoc : pymongo.MongoClient
+        Database client.
+
+    mongodb : pymongo.Database
+        Mongo database to interact with.
+
+    pantry : pantry_raid.models.pantry.Pantry
+        Deprecated anonymous pantry collection. When the user is logged in, functions instead call functions from UserCollection to act on a specific user&#39;s pantry.
+
+    recipes : pantry_raid.models.recipes.Recipes
+        Recipe collection.
+
+    ingredients : pantry_raid.models.ingredients.Ingredients
+        Ingredients collection.
+    &#34;&#34;&#34;
+
+    def __init__(self, config):
+        &#34;&#34;&#34;Instantiates a database client.
+
+        Parameters
+        ----------
+        config : config.Config
+            Configuration object used to instantiate the client.
+        &#34;&#34;&#34;
+        self.config = config
+        self.mongoc = self.setup_mongoclient()
+        self.mongodb = self.mongoc.get_database()
+
+        self.recipes = Recipes(self.mongodb.recipes_v2)
+        self.ingredients = Ingredients(self.mongodb.ingredients_v2)
+        self.pantry = Pantry(self.mongodb.pantry)
+        self.users = UserCollection(self.mongodb.users)
+        self.favorites = Favorites(self.mongodb.favorites)
+
+    def setup_mongoclient(self):
+        &#34;&#34;&#34;Creates a MongoClient with the appropriate connection and authentication string.
+
+        Returns
+        -------
+        pymongo.MongoClient
+            MongoClient for the configured database
+        &#34;&#34;&#34;
+        return MongoClient(self.config[&#39;CONNECTION_URL&#39;])
+
+    def get_all_ingredients(self):
+        &#34;&#34;&#34;Gets all ingredients from the Ingredients collection.
+
+        Returns
+        -------
+        list[string]
+            List of ingredients
+        &#34;&#34;&#34;
+        return self.ingredients.get_as_list()
+
+    def get_all_recipes(self):
+        &#34;&#34;&#34;Gets all recipes from the Recipes collection.
+
+        Returns
+        -------
+        list[dict]
+            List of recipes as dicts
+        &#34;&#34;&#34;
+        return self.recipes.get_as_list()
+
+    def get_pantry_contents(self):
+        &#34;&#34;&#34;Gets all inredients from the current Pantry collection.
+
+        Returns
+        -------
+        list[string]
+            List of pantry ingredients
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return sorted(self.users.find_by_username(current_user.database[&#34;_id&#34;])[&#39;pantry&#39;], key=lambda v: v.upper())
+        return sorted(self.pantry.get_as_list(), key=lambda v: v.upper())
+
+    def add_ingredient_to_pantry(self, new_ingredient):
+        &#34;&#34;&#34;Attempts to add a new ingredient to the Pantry collection. Ensures that the ingredient requested is both valid (exists in at least one recipe) and isn&#39;t already present in the current pantry.
+
+        Parameters
+        ----------
+        new_ingredient : string
+            New ingredient to add
+
+        Returns
+        -------
+        dict
+            Dict containing status text and CSS class to apply to the status text indicating success or failure.
+        &#34;&#34;&#34;
+        if new_ingredient not in self.get_all_ingredients():
+            return Status(&#34;danger&#34;, f&#34;Error: &#39;{new_ingredient}&#39; is not a valid ingredient&#34;)
+        elif new_ingredient in self.get_pantry_contents():
+            return Status(&#34;danger&#34;, f&#34;Error: &#39;{new_ingredient}&#39; is already in your pantry.&#34;)
+
+        if current_user.is_active:
+            return self.users.pantry_insert_ingredient(new_ingredient, current_user.database[&#34;_id&#34;])
+
+        return self.pantry.insert_new_ingredient(new_ingredient)
+
+    def remove_ingredient_from_pantry(self, ingredient_to_remove):
+        &#34;&#34;&#34;Attempts to remove an ingredient from the pantry.
+
+        Parameters
+        ----------
+        ingredient_to_remove : string
+            New ingredient to add
+
+        Returns
+        -------
+        dict
+            Dict containing status text and CSS class to apply to the status text indicating success or failure.
+        &#34;&#34;&#34;
+        if ingredient_to_remove not in self.get_pantry_contents():
+            return Status(&#34;danger&#34;, f&#34;Error: &#39;{ingredient_to_remove}&#39; is not in your pantry.&#34;)
+
+        if current_user.is_active:
+            return self.users.pantry_remove_ingredient(ingredient_to_remove, current_user.database[&#34;_id&#34;])
+
+        return self.pantry.remove_ingredient(ingredient_to_remove)
+
+    def find_all_matching_recipes(self, data=None):
+        &#34;&#34;&#34;Finds all recipes that use only ingredients from the current pantry.
+
+        Parameters
+        ----------
+        filters : list[dict]
+            Desired filters
+
+        Returns
+        -------
+        list[dict]
+            List of recipe documents
+        &#34;&#34;&#34;
+        if data is not None:
+            if data.get(&#39;list_filters&#39;) is None:
+                data[&#39;filters&#39;] = data.get(&#39;comparator_filters&#39;)
+            else:
+                data[&#39;filters&#39;] = data.get(&#39;list_filters&#39;)
+                data[&#39;filters&#39;].update(data.get(&#39;comparator_filters&#39;))
+                data[&#39;filters&#39;].update(data.get(&#39;macro_value&#39;))
+            if data.get(&#39;use_subs&#39;, &#39;n&#39;) == &#39;y&#39; and current_user.is_active:
+                pantry = self.users.get_pantry_with_substitutions(current_user.get_id())
+            else:
+                pantry = self.get_pantry_contents()
+        else:
+            pantry = self.get_pantry_contents()
+        return self.recipes.get_from_pantry(pantry, data)
+
+    def get_recipe_by_id(self, rid):
+        &#34;&#34;&#34;Gets a single recipe by the &#34;id&#34; field.
+
+        Parameters
+        ----------
+        id : string
+            Recipe ID
+
+        Returns
+        -------
+        dict
+            Dict representing a single recipe document
+        &#34;&#34;&#34;
+        return self.recipes.get_by_id(rid)
+
+    def get_favorites(self):
+        &#34;&#34;&#34;Gets all inredients from the current Favorites collection.
+
+        Returns
+        -------
+        list[string]
+            List of favorite recipes
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return sorted(self.users.find_by_username(current_user.database[&#34;_id&#34;])[&#39;favorites&#39;], key=lambda v: v.upper())
+        return []
+
+    def add_recipe_to_favorites(self, recipe):
+        &#34;&#34;&#34;Attempts to add a new ingredient to the Pantry collection. Ensures that the ingredient requested is both valid (exists in at least one recipe) and isn&#39;t already present in the current pantry.
+
+        Parameters
+        ----------
+        recipe : string
+            New recipe to add
+
+        Returns
+        -------
+        dict
+            Dict containing status text and CSS class to apply to the status text indicating success or failure.
+        &#34;&#34;&#34;
+        if recipe in self.get_favorites():
+            flash(f&#34;Error: &#39;{recipe}&#39; is already in your favorites.&#34;, &#34;danger&#34;)
+            return
+
+        if current_user.is_active:
+            return self.users.favorites_insert_recipe(recipe, current_user.database[&#34;_id&#34;])
+
+        # nothing to return if anonymous
+        return
+
+    def remove_recipe_from_favorites(self, recipe):
+        &#34;&#34;&#34;Attempts to remove an ingredient from the pantry.
+
+        Parameters
+        ----------
+        recipe : string
+            recipe to remove
+
+        Returns
+        -------
+        dict
+            Dict containing status text and CSS class to apply to the status text indicating success or failure.
+        &#34;&#34;&#34;
+        if recipe not in self.get_favorites():
+            flash(f&#34;Error: &#39;{recipe}&#39; is not in your pantry.&#34;, &#34;danger&#34;)
+
+        if current_user.is_active:
+            return self.users.favorites_remove_recipe(recipe, current_user.database[&#34;_id&#34;])
+
+        # nothing to remove if anonymous
+        return
+
+    def get_substitutions(self):
+        &#34;&#34;&#34;Gets the current user&#39;s substitutions.
+
+        Returns
+        -------
+        list
+            Substitutions
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return self.users.find_by_username(current_user.get_id()).get(&#39;substitutes&#39;)
+        return []
+
+    def insert_substitution(self, sub):
+        &#34;&#34;&#34;Inserts a new custom substitution.
+
+        Parameters
+        ----------
+        sub : dict
+            Dict containing substitution information to insert
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return self.users.substitute_insert(sub, current_user.get_id())
+        return Status(&#34;danger&#34;, &#34;Please log in to create custom ingredient substititions.&#34;)
+
+    def remove_substitution(self, sub_index):
+        &#34;&#34;&#34;Removes a custom substitution. Removal is based on index, because the same ingredient and quantity could be substituted in different ways.
+
+        Parameters
+        ----------
+        sub_index : string or int
+            Array index of the substitution to remove
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return self.users.substitute_remove(sub_index, current_user.get_id())
+        return Status(&#34;danger&#34;, &#34;Please log in to remove ingredient substititions.&#34;)
+
+    def get_recipes_by_tag(self, tag):
+        &#34;&#34;&#34;Gets all recipes of a certain tag.
+
+        Params
+        ------
+        tag : string
+
+        Returns
+        -------
+        list
+            Matching recipes
+        &#34;&#34;&#34;
+        return list(self.recipes.get_by_tag(tag))</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="pantry_raid.models.database.Database"><code class="flex name class">
+<span>class <span class="ident">Database</span></span>
+<span>(</span><span>config)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Class for all MongoDB-related operations. This class acts as a public interface to all MongoCollections.</p>
+<h2 id="attributes">Attributes</h2>
+<dl>
+<dt><strong><code>config</code></strong> :&ensp;<a title="pantry_raid.config.Config" href="../config.html#pantry_raid.config.Config"><code>Config</code></a></dt>
+<dd>Configuration object used to instantiate the client.</dd>
+<dt><strong><code>mongoc</code></strong> :&ensp;<code>pymongo.MongoClient</code></dt>
+<dd>Database client.</dd>
+<dt><strong><code>mongodb</code></strong> :&ensp;<code>pymongo.Database</code></dt>
+<dd>Mongo database to interact with.</dd>
+<dt><strong><code>pantry</code></strong> :&ensp;<a title="pantry_raid.models.pantry.Pantry" href="pantry.html#pantry_raid.models.pantry.Pantry"><code>Pantry</code></a></dt>
+<dd>Deprecated anonymous pantry collection. When the user is logged in, functions instead call functions from UserCollection to act on a specific user's pantry.</dd>
+<dt><strong><code>recipes</code></strong> :&ensp;<a title="pantry_raid.models.recipes.Recipes" href="recipes.html#pantry_raid.models.recipes.Recipes"><code>Recipes</code></a></dt>
+<dd>Recipe collection.</dd>
+<dt><strong><code>ingredients</code></strong> :&ensp;<a title="pantry_raid.models.ingredients.Ingredients" href="ingredients.html#pantry_raid.models.ingredients.Ingredients"><code>Ingredients</code></a></dt>
+<dd>Ingredients collection.</dd>
+</dl>
+<p>Instantiates a database client.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>config</code></strong> :&ensp;<code>config.Config</code></dt>
+<dd>Configuration object used to instantiate the client.</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">class Database(object):
+    &#34;&#34;&#34;Class for all MongoDB-related operations. This class acts as a public interface to all MongoCollections.
+
+    Attributes
+    ----------
+    config : pantry_raid.config.Config
+        Configuration object used to instantiate the client.
+
+    mongoc : pymongo.MongoClient
+        Database client.
+
+    mongodb : pymongo.Database
+        Mongo database to interact with.
+
+    pantry : pantry_raid.models.pantry.Pantry
+        Deprecated anonymous pantry collection. When the user is logged in, functions instead call functions from UserCollection to act on a specific user&#39;s pantry.
+
+    recipes : pantry_raid.models.recipes.Recipes
+        Recipe collection.
+
+    ingredients : pantry_raid.models.ingredients.Ingredients
+        Ingredients collection.
+    &#34;&#34;&#34;
+
+    def __init__(self, config):
+        &#34;&#34;&#34;Instantiates a database client.
+
+        Parameters
+        ----------
+        config : config.Config
+            Configuration object used to instantiate the client.
+        &#34;&#34;&#34;
+        self.config = config
+        self.mongoc = self.setup_mongoclient()
+        self.mongodb = self.mongoc.get_database()
+
+        self.recipes = Recipes(self.mongodb.recipes_v2)
+        self.ingredients = Ingredients(self.mongodb.ingredients_v2)
+        self.pantry = Pantry(self.mongodb.pantry)
+        self.users = UserCollection(self.mongodb.users)
+        self.favorites = Favorites(self.mongodb.favorites)
+
+    def setup_mongoclient(self):
+        &#34;&#34;&#34;Creates a MongoClient with the appropriate connection and authentication string.
+
+        Returns
+        -------
+        pymongo.MongoClient
+            MongoClient for the configured database
+        &#34;&#34;&#34;
+        return MongoClient(self.config[&#39;CONNECTION_URL&#39;])
+
+    def get_all_ingredients(self):
+        &#34;&#34;&#34;Gets all ingredients from the Ingredients collection.
+
+        Returns
+        -------
+        list[string]
+            List of ingredients
+        &#34;&#34;&#34;
+        return self.ingredients.get_as_list()
+
+    def get_all_recipes(self):
+        &#34;&#34;&#34;Gets all recipes from the Recipes collection.
+
+        Returns
+        -------
+        list[dict]
+            List of recipes as dicts
+        &#34;&#34;&#34;
+        return self.recipes.get_as_list()
+
+    def get_pantry_contents(self):
+        &#34;&#34;&#34;Gets all inredients from the current Pantry collection.
+
+        Returns
+        -------
+        list[string]
+            List of pantry ingredients
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return sorted(self.users.find_by_username(current_user.database[&#34;_id&#34;])[&#39;pantry&#39;], key=lambda v: v.upper())
+        return sorted(self.pantry.get_as_list(), key=lambda v: v.upper())
+
+    def add_ingredient_to_pantry(self, new_ingredient):
+        &#34;&#34;&#34;Attempts to add a new ingredient to the Pantry collection. Ensures that the ingredient requested is both valid (exists in at least one recipe) and isn&#39;t already present in the current pantry.
+
+        Parameters
+        ----------
+        new_ingredient : string
+            New ingredient to add
+
+        Returns
+        -------
+        dict
+            Dict containing status text and CSS class to apply to the status text indicating success or failure.
+        &#34;&#34;&#34;
+        if new_ingredient not in self.get_all_ingredients():
+            return Status(&#34;danger&#34;, f&#34;Error: &#39;{new_ingredient}&#39; is not a valid ingredient&#34;)
+        elif new_ingredient in self.get_pantry_contents():
+            return Status(&#34;danger&#34;, f&#34;Error: &#39;{new_ingredient}&#39; is already in your pantry.&#34;)
+
+        if current_user.is_active:
+            return self.users.pantry_insert_ingredient(new_ingredient, current_user.database[&#34;_id&#34;])
+
+        return self.pantry.insert_new_ingredient(new_ingredient)
+
+    def remove_ingredient_from_pantry(self, ingredient_to_remove):
+        &#34;&#34;&#34;Attempts to remove an ingredient from the pantry.
+
+        Parameters
+        ----------
+        ingredient_to_remove : string
+            New ingredient to add
+
+        Returns
+        -------
+        dict
+            Dict containing status text and CSS class to apply to the status text indicating success or failure.
+        &#34;&#34;&#34;
+        if ingredient_to_remove not in self.get_pantry_contents():
+            return Status(&#34;danger&#34;, f&#34;Error: &#39;{ingredient_to_remove}&#39; is not in your pantry.&#34;)
+
+        if current_user.is_active:
+            return self.users.pantry_remove_ingredient(ingredient_to_remove, current_user.database[&#34;_id&#34;])
+
+        return self.pantry.remove_ingredient(ingredient_to_remove)
+
+    def find_all_matching_recipes(self, data=None):
+        &#34;&#34;&#34;Finds all recipes that use only ingredients from the current pantry.
+
+        Parameters
+        ----------
+        filters : list[dict]
+            Desired filters
+
+        Returns
+        -------
+        list[dict]
+            List of recipe documents
+        &#34;&#34;&#34;
+        if data is not None:
+            if data.get(&#39;list_filters&#39;) is None:
+                data[&#39;filters&#39;] = data.get(&#39;comparator_filters&#39;)
+            else:
+                data[&#39;filters&#39;] = data.get(&#39;list_filters&#39;)
+                data[&#39;filters&#39;].update(data.get(&#39;comparator_filters&#39;))
+                data[&#39;filters&#39;].update(data.get(&#39;macro_value&#39;))
+            if data.get(&#39;use_subs&#39;, &#39;n&#39;) == &#39;y&#39; and current_user.is_active:
+                pantry = self.users.get_pantry_with_substitutions(current_user.get_id())
+            else:
+                pantry = self.get_pantry_contents()
+        else:
+            pantry = self.get_pantry_contents()
+        return self.recipes.get_from_pantry(pantry, data)
+
+    def get_recipe_by_id(self, rid):
+        &#34;&#34;&#34;Gets a single recipe by the &#34;id&#34; field.
+
+        Parameters
+        ----------
+        id : string
+            Recipe ID
+
+        Returns
+        -------
+        dict
+            Dict representing a single recipe document
+        &#34;&#34;&#34;
+        return self.recipes.get_by_id(rid)
+
+    def get_favorites(self):
+        &#34;&#34;&#34;Gets all inredients from the current Favorites collection.
+
+        Returns
+        -------
+        list[string]
+            List of favorite recipes
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return sorted(self.users.find_by_username(current_user.database[&#34;_id&#34;])[&#39;favorites&#39;], key=lambda v: v.upper())
+        return []
+
+    def add_recipe_to_favorites(self, recipe):
+        &#34;&#34;&#34;Attempts to add a new ingredient to the Pantry collection. Ensures that the ingredient requested is both valid (exists in at least one recipe) and isn&#39;t already present in the current pantry.
+
+        Parameters
+        ----------
+        recipe : string
+            New recipe to add
+
+        Returns
+        -------
+        dict
+            Dict containing status text and CSS class to apply to the status text indicating success or failure.
+        &#34;&#34;&#34;
+        if recipe in self.get_favorites():
+            flash(f&#34;Error: &#39;{recipe}&#39; is already in your favorites.&#34;, &#34;danger&#34;)
+            return
+
+        if current_user.is_active:
+            return self.users.favorites_insert_recipe(recipe, current_user.database[&#34;_id&#34;])
+
+        # nothing to return if anonymous
+        return
+
+    def remove_recipe_from_favorites(self, recipe):
+        &#34;&#34;&#34;Attempts to remove an ingredient from the pantry.
+
+        Parameters
+        ----------
+        recipe : string
+            recipe to remove
+
+        Returns
+        -------
+        dict
+            Dict containing status text and CSS class to apply to the status text indicating success or failure.
+        &#34;&#34;&#34;
+        if recipe not in self.get_favorites():
+            flash(f&#34;Error: &#39;{recipe}&#39; is not in your pantry.&#34;, &#34;danger&#34;)
+
+        if current_user.is_active:
+            return self.users.favorites_remove_recipe(recipe, current_user.database[&#34;_id&#34;])
+
+        # nothing to remove if anonymous
+        return
+
+    def get_substitutions(self):
+        &#34;&#34;&#34;Gets the current user&#39;s substitutions.
+
+        Returns
+        -------
+        list
+            Substitutions
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return self.users.find_by_username(current_user.get_id()).get(&#39;substitutes&#39;)
+        return []
+
+    def insert_substitution(self, sub):
+        &#34;&#34;&#34;Inserts a new custom substitution.
+
+        Parameters
+        ----------
+        sub : dict
+            Dict containing substitution information to insert
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return self.users.substitute_insert(sub, current_user.get_id())
+        return Status(&#34;danger&#34;, &#34;Please log in to create custom ingredient substititions.&#34;)
+
+    def remove_substitution(self, sub_index):
+        &#34;&#34;&#34;Removes a custom substitution. Removal is based on index, because the same ingredient and quantity could be substituted in different ways.
+
+        Parameters
+        ----------
+        sub_index : string or int
+            Array index of the substitution to remove
+
+        Returns
+        -------
+        pantry_raid.models.status.Status
+        &#34;&#34;&#34;
+        if current_user.is_active:
+            return self.users.substitute_remove(sub_index, current_user.get_id())
+        return Status(&#34;danger&#34;, &#34;Please log in to remove ingredient substititions.&#34;)
+
+    def get_recipes_by_tag(self, tag):
+        &#34;&#34;&#34;Gets all recipes of a certain tag.
+
+        Params
+        ------
+        tag : string
+
+        Returns
+        -------
+        list
+            Matching recipes
+        &#34;&#34;&#34;
+        return list(self.recipes.get_by_tag(tag))</code></pre>
+</details>
+<h3>Methods</h3>
+<dl>
+<dt id="pantry_raid.models.database.Database.add_ingredient_to_pantry"><code class="name flex">
+<span>def <span class="ident">add_ingredient_to_pantry</span></span>(<span>self, new_ingredient)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Attempts to add a new ingredient to the Pantry collection. Ensures that the ingredient requested is both valid (exists in at least one recipe) and isn't already present in the current pantry.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>new_ingredient</code></strong> :&ensp;<code>string</code></dt>
+<dd>New ingredient to add</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>Dict containing status text and CSS class to apply to the status text indicating success or failure.</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_ingredient_to_pantry(self, new_ingredient):
+    &#34;&#34;&#34;Attempts to add a new ingredient to the Pantry collection. Ensures that the ingredient requested is both valid (exists in at least one recipe) and isn&#39;t already present in the current pantry.
+
+    Parameters
+    ----------
+    new_ingredient : string
+        New ingredient to add
+
+    Returns
+    -------
+    dict
+        Dict containing status text and CSS class to apply to the status text indicating success or failure.
+    &#34;&#34;&#34;
+    if new_ingredient not in self.get_all_ingredients():
+        return Status(&#34;danger&#34;, f&#34;Error: &#39;{new_ingredient}&#39; is not a valid ingredient&#34;)
+    elif new_ingredient in self.get_pantry_contents():
+        return Status(&#34;danger&#34;, f&#34;Error: &#39;{new_ingredient}&#39; is already in your pantry.&#34;)
+
+    if current_user.is_active:
+        return self.users.pantry_insert_ingredient(new_ingredient, current_user.database[&#34;_id&#34;])
+
+    return self.pantry.insert_new_ingredient(new_ingredient)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.add_recipe_to_favorites"><code class="name flex">
+<span>def <span class="ident">add_recipe_to_favorites</span></span>(<span>self, recipe)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Attempts to add a new ingredient to the Pantry collection. Ensures that the ingredient requested is both valid (exists in at least one recipe) and isn't already present in the current pantry.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>recipe</code></strong> :&ensp;<code>string</code></dt>
+<dd>New recipe to add</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>Dict containing status text and CSS class to apply to the status text indicating success or failure.</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def add_recipe_to_favorites(self, recipe):
+    &#34;&#34;&#34;Attempts to add a new ingredient to the Pantry collection. Ensures that the ingredient requested is both valid (exists in at least one recipe) and isn&#39;t already present in the current pantry.
+
+    Parameters
+    ----------
+    recipe : string
+        New recipe to add
+
+    Returns
+    -------
+    dict
+        Dict containing status text and CSS class to apply to the status text indicating success or failure.
+    &#34;&#34;&#34;
+    if recipe in self.get_favorites():
+        flash(f&#34;Error: &#39;{recipe}&#39; is already in your favorites.&#34;, &#34;danger&#34;)
+        return
+
+    if current_user.is_active:
+        return self.users.favorites_insert_recipe(recipe, current_user.database[&#34;_id&#34;])
+
+    # nothing to return if anonymous
+    return</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.find_all_matching_recipes"><code class="name flex">
+<span>def <span class="ident">find_all_matching_recipes</span></span>(<span>self, data=None)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Finds all recipes that use only ingredients from the current pantry.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>filters</code></strong> :&ensp;<code>list</code>[<code>dict</code>]</dt>
+<dd>Desired filters</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code>[<code>dict</code>]</dt>
+<dd>List of recipe documents</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def find_all_matching_recipes(self, data=None):
+    &#34;&#34;&#34;Finds all recipes that use only ingredients from the current pantry.
+
+    Parameters
+    ----------
+    filters : list[dict]
+        Desired filters
+
+    Returns
+    -------
+    list[dict]
+        List of recipe documents
+    &#34;&#34;&#34;
+    if data is not None:
+        if data.get(&#39;list_filters&#39;) is None:
+            data[&#39;filters&#39;] = data.get(&#39;comparator_filters&#39;)
+        else:
+            data[&#39;filters&#39;] = data.get(&#39;list_filters&#39;)
+            data[&#39;filters&#39;].update(data.get(&#39;comparator_filters&#39;))
+            data[&#39;filters&#39;].update(data.get(&#39;macro_value&#39;))
+        if data.get(&#39;use_subs&#39;, &#39;n&#39;) == &#39;y&#39; and current_user.is_active:
+            pantry = self.users.get_pantry_with_substitutions(current_user.get_id())
+        else:
+            pantry = self.get_pantry_contents()
+    else:
+        pantry = self.get_pantry_contents()
+    return self.recipes.get_from_pantry(pantry, data)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.get_all_ingredients"><code class="name flex">
+<span>def <span class="ident">get_all_ingredients</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets all ingredients from the Ingredients collection.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code>[<code>string</code>]</dt>
+<dd>List of ingredients</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_all_ingredients(self):
+    &#34;&#34;&#34;Gets all ingredients from the Ingredients collection.
+
+    Returns
+    -------
+    list[string]
+        List of ingredients
+    &#34;&#34;&#34;
+    return self.ingredients.get_as_list()</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.get_all_recipes"><code class="name flex">
+<span>def <span class="ident">get_all_recipes</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets all recipes from the Recipes collection.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code>[<code>dict</code>]</dt>
+<dd>List of recipes as dicts</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_all_recipes(self):
+    &#34;&#34;&#34;Gets all recipes from the Recipes collection.
+
+    Returns
+    -------
+    list[dict]
+        List of recipes as dicts
+    &#34;&#34;&#34;
+    return self.recipes.get_as_list()</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.get_favorites"><code class="name flex">
+<span>def <span class="ident">get_favorites</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets all inredients from the current Favorites collection.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code>[<code>string</code>]</dt>
+<dd>List of favorite recipes</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_favorites(self):
+    &#34;&#34;&#34;Gets all inredients from the current Favorites collection.
+
+    Returns
+    -------
+    list[string]
+        List of favorite recipes
+    &#34;&#34;&#34;
+    if current_user.is_active:
+        return sorted(self.users.find_by_username(current_user.database[&#34;_id&#34;])[&#39;favorites&#39;], key=lambda v: v.upper())
+    return []</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.get_pantry_contents"><code class="name flex">
+<span>def <span class="ident">get_pantry_contents</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets all inredients from the current Pantry collection.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code>[<code>string</code>]</dt>
+<dd>List of pantry ingredients</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_pantry_contents(self):
+    &#34;&#34;&#34;Gets all inredients from the current Pantry collection.
+
+    Returns
+    -------
+    list[string]
+        List of pantry ingredients
+    &#34;&#34;&#34;
+    if current_user.is_active:
+        return sorted(self.users.find_by_username(current_user.database[&#34;_id&#34;])[&#39;pantry&#39;], key=lambda v: v.upper())
+    return sorted(self.pantry.get_as_list(), key=lambda v: v.upper())</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.get_recipe_by_id"><code class="name flex">
+<span>def <span class="ident">get_recipe_by_id</span></span>(<span>self, rid)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets a single recipe by the "id" field.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>id</code></strong> :&ensp;<code>string</code></dt>
+<dd>Recipe ID</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>Dict representing a single recipe document</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_recipe_by_id(self, rid):
+    &#34;&#34;&#34;Gets a single recipe by the &#34;id&#34; field.
+
+    Parameters
+    ----------
+    id : string
+        Recipe ID
+
+    Returns
+    -------
+    dict
+        Dict representing a single recipe document
+    &#34;&#34;&#34;
+    return self.recipes.get_by_id(rid)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.get_recipes_by_tag"><code class="name flex">
+<span>def <span class="ident">get_recipes_by_tag</span></span>(<span>self, tag)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets all recipes of a certain tag.</p>
+<h2 id="params">Params</h2>
+<dl>
+<dt><strong><code>tag</code></strong> :&ensp;<code>string</code></dt>
+<dd>&nbsp;</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>Matching recipes</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_recipes_by_tag(self, tag):
+    &#34;&#34;&#34;Gets all recipes of a certain tag.
+
+    Params
+    ------
+    tag : string
+
+    Returns
+    -------
+    list
+        Matching recipes
+    &#34;&#34;&#34;
+    return list(self.recipes.get_by_tag(tag))</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.get_substitutions"><code class="name flex">
+<span>def <span class="ident">get_substitutions</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Gets the current user's substitutions.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>list</code></dt>
+<dd>Substitutions</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def get_substitutions(self):
+    &#34;&#34;&#34;Gets the current user&#39;s substitutions.
+
+    Returns
+    -------
+    list
+        Substitutions
+    &#34;&#34;&#34;
+    if current_user.is_active:
+        return self.users.find_by_username(current_user.get_id()).get(&#39;substitutes&#39;)
+    return []</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.insert_substitution"><code class="name flex">
+<span>def <span class="ident">insert_substitution</span></span>(<span>self, sub)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Inserts a new custom substitution.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>sub</code></strong> :&ensp;<code>dict</code></dt>
+<dd>Dict containing substitution information to insert</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><a title="pantry_raid.models.status.Status" href="status.html#pantry_raid.models.status.Status"><code>Status</code></a></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def insert_substitution(self, sub):
+    &#34;&#34;&#34;Inserts a new custom substitution.
+
+    Parameters
+    ----------
+    sub : dict
+        Dict containing substitution information to insert
+
+    Returns
+    -------
+    pantry_raid.models.status.Status
+    &#34;&#34;&#34;
+    if current_user.is_active:
+        return self.users.substitute_insert(sub, current_user.get_id())
+    return Status(&#34;danger&#34;, &#34;Please log in to create custom ingredient substititions.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.remove_ingredient_from_pantry"><code class="name flex">
+<span>def <span class="ident">remove_ingredient_from_pantry</span></span>(<span>self, ingredient_to_remove)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Attempts to remove an ingredient from the pantry.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>ingredient_to_remove</code></strong> :&ensp;<code>string</code></dt>
+<dd>New ingredient to add</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>Dict containing status text and CSS class to apply to the status text indicating success or failure.</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def remove_ingredient_from_pantry(self, ingredient_to_remove):
+    &#34;&#34;&#34;Attempts to remove an ingredient from the pantry.
+
+    Parameters
+    ----------
+    ingredient_to_remove : string
+        New ingredient to add
+
+    Returns
+    -------
+    dict
+        Dict containing status text and CSS class to apply to the status text indicating success or failure.
+    &#34;&#34;&#34;
+    if ingredient_to_remove not in self.get_pantry_contents():
+        return Status(&#34;danger&#34;, f&#34;Error: &#39;{ingredient_to_remove}&#39; is not in your pantry.&#34;)
+
+    if current_user.is_active:
+        return self.users.pantry_remove_ingredient(ingredient_to_remove, current_user.database[&#34;_id&#34;])
+
+    return self.pantry.remove_ingredient(ingredient_to_remove)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.remove_recipe_from_favorites"><code class="name flex">
+<span>def <span class="ident">remove_recipe_from_favorites</span></span>(<span>self, recipe)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Attempts to remove an ingredient from the pantry.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>recipe</code></strong> :&ensp;<code>string</code></dt>
+<dd>recipe to remove</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>dict</code></dt>
+<dd>Dict containing status text and CSS class to apply to the status text indicating success or failure.</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def remove_recipe_from_favorites(self, recipe):
+    &#34;&#34;&#34;Attempts to remove an ingredient from the pantry.
+
+    Parameters
+    ----------
+    recipe : string
+        recipe to remove
+
+    Returns
+    -------
+    dict
+        Dict containing status text and CSS class to apply to the status text indicating success or failure.
+    &#34;&#34;&#34;
+    if recipe not in self.get_favorites():
+        flash(f&#34;Error: &#39;{recipe}&#39; is not in your pantry.&#34;, &#34;danger&#34;)
+
+    if current_user.is_active:
+        return self.users.favorites_remove_recipe(recipe, current_user.database[&#34;_id&#34;])
+
+    # nothing to remove if anonymous
+    return</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.remove_substitution"><code class="name flex">
+<span>def <span class="ident">remove_substitution</span></span>(<span>self, sub_index)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Removes a custom substitution. Removal is based on index, because the same ingredient and quantity could be substituted in different ways.</p>
+<h2 id="parameters">Parameters</h2>
+<dl>
+<dt><strong><code>sub_index</code></strong> :&ensp;<code>string</code> or <code>int</code></dt>
+<dd>Array index of the substitution to remove</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><a title="pantry_raid.models.status.Status" href="status.html#pantry_raid.models.status.Status"><code>Status</code></a></dt>
+<dd>&nbsp;</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def remove_substitution(self, sub_index):
+    &#34;&#34;&#34;Removes a custom substitution. Removal is based on index, because the same ingredient and quantity could be substituted in different ways.
+
+    Parameters
+    ----------
+    sub_index : string or int
+        Array index of the substitution to remove
+
+    Returns
+    -------
+    pantry_raid.models.status.Status
+    &#34;&#34;&#34;
+    if current_user.is_active:
+        return self.users.substitute_remove(sub_index, current_user.get_id())
+    return Status(&#34;danger&#34;, &#34;Please log in to remove ingredient substititions.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="pantry_raid.models.database.Database.setup_mongoclient"><code class="name flex">
+<span>def <span class="ident">setup_mongoclient</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<section class="desc"><p>Creates a MongoClient with the appropriate connection and authentication string.</p>
+<h2 id="returns">Returns</h2>
+<dl>
+<dt><code>pymongo.MongoClient</code></dt>
+<dd>MongoClient for the configured database</dd>
+</dl></section>
+<details class="source">
+<summary>Source code</summary>
+<pre><code class="python">def setup_mongoclient(self):
+    &#34;&#34;&#34;Creates a MongoClient with the appropriate connection and authentication string.
+
+    Returns
+    -------
+    pymongo.MongoClient
+        MongoClient for the configured database
+    &#34;&#34;&#34;
+    return MongoClient(self.config[&#39;CONNECTION_URL&#39;])</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="pantry_raid.models" href="index.html">pantry_raid.models</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="pantry_raid.models.database.Database" href="#pantry_raid.models.database.Database">Database</a></code></h4>
+<ul class="">
+<li><code><a title="pantry_raid.models.database.Database.add_ingredient_to_pantry" href="#pantry_raid.models.database.Database.add_ingredient_to_pantry">add_ingredient_to_pantry</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.add_recipe_to_favorites" href="#pantry_raid.models.database.Database.add_recipe_to_favorites">add_recipe_to_favorites</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.find_all_matching_recipes" href="#pantry_raid.models.database.Database.find_all_matching_recipes">find_all_matching_recipes</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.get_all_ingredients" href="#pantry_raid.models.database.Database.get_all_ingredients">get_all_ingredients</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.get_all_recipes" href="#pantry_raid.models.database.Database.get_all_recipes">get_all_recipes</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.get_favorites" href="#pantry_raid.models.database.Database.get_favorites">get_favorites</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.get_pantry_contents" href="#pantry_raid.models.database.Database.get_pantry_contents">get_pantry_contents</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.get_recipe_by_id" href="#pantry_raid.models.database.Database.get_recipe_by_id">get_recipe_by_id</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.get_recipes_by_tag" href="#pantry_raid.models.database.Database.get_recipes_by_tag">get_recipes_by_tag</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.get_substitutions" href="#pantry_raid.models.database.Database.get_substitutions">get_substitutions</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.insert_substitution" href="#pantry_raid.models.database.Database.insert_substitution">insert_substitution</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.remove_ingredient_from_pantry" href="#pantry_raid.models.database.Database.remove_ingredient_from_pantry">remove_ingredient_from_pantry</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.remove_recipe_from_favorites" href="#pantry_raid.models.database.Database.remove_recipe_from_favorites">remove_recipe_from_favorites</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.remove_substitution" href="#pantry_raid.models.database.Database.remove_substitution">remove_substitution</a></code></li>
+<li><code><a title="pantry_raid.models.database.Database.setup_mongoclient" href="#pantry_raid.models.database.Database.setup_mongoclient">setup_mongoclient</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.6.2</a>.</p>
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad()</script>
+</body>
+</html>
